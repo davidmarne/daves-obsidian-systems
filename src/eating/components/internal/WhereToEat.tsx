@@ -21,15 +21,17 @@ interface WhereToEatState {
 }
 
 const calculateRestaurantRankings = (restaurants: Restaurant[], selectedCuisines: { [key: string]: boolean }) => {
-    const rankings: { [key: string]: number } = {}
+    const rankings: { [key: string]: boolean } = {}
+    console.log(selectedCuisines)
+
     for (const restaurant of restaurants) {
-        let ingredientInstock = 0;
         for (const cuisine of restaurant.cuisines) {
+            console.log(selectedCuisines[cuisine.name], restaurant, cuisine.name)
+
             if (selectedCuisines[cuisine.name]) {
-                ingredientInstock++;
+                rankings[restaurant.name] = true;
             }
         }
-        rankings[restaurant.name] = Math.round(ingredientInstock / restaurant.cuisines.length * 100);
     }
     return rankings;
 }
@@ -58,9 +60,9 @@ export const WhereToEatForm = (props: {
     }, [whereToEatState.selectedCuisines]);
 
 
-    const restaurantRankings = useMemo(
+    const restaurantsWithSelectedCuisines = useMemo(
         () => calculateRestaurantRankings(props.restaurants, cuisineLookup),
-        [whereToEatState.selectedCuisines]);
+        [cuisineLookup]);
 
     const restaurantLookup = useMemo(() => {
         const lookup: { [key: string]: Restaurant } = {};
@@ -95,7 +97,7 @@ export const WhereToEatForm = (props: {
     } else {
         content = <SelectRestaurantsContent
             restaurantLookup={restaurantLookup}
-            restaurantRankings={restaurantRankings}
+            restaurantsWithSelectedCuisines={restaurantsWithSelectedCuisines}
             whereToEatState={whereToEatState}
             setWhereToEatState={setWhereToEatState} />
     }
@@ -176,7 +178,7 @@ const SelectRestaurantCriteriaContent = (props: {
 
 const SelectRestaurantsContent = (props: {
     restaurantLookup: { [key: string]: Restaurant },
-    restaurantRankings: { [key: string]: number },
+    restaurantsWithSelectedCuisines: { [key: string]: boolean },
     whereToEatState: WhereToEatState,
     setWhereToEatState: Dispatch<SetStateAction<WhereToEatState>>
 }) => {
@@ -187,9 +189,10 @@ const SelectRestaurantsContent = (props: {
     }, [props.whereToEatState])
 
     const restaurantsSorted = useMemo(() => {
-        return Object.keys(props.restaurantLookup)
-            .sort((a, b) => props.restaurantLookup[a] > props.restaurantLookup[b] ? 1 : -1)
-    }, []);
+        return Object.keys(props.restaurantsWithSelectedCuisines).sort();
+    }, [props.restaurantsWithSelectedCuisines]);
+
+    console.log(props.restaurantLookup, props.restaurantsWithSelectedCuisines)
 
     return <Select
         label="Kinds"
@@ -200,7 +203,7 @@ const SelectRestaurantsContent = (props: {
         {restaurantsSorted.map(restaurant => <MenuItem
             key={restaurant}
             value={restaurant}>
-            {`${restaurant} - ${props.restaurantRankings[restaurant]}`}
+            {restaurant}
         </MenuItem>)}
     </Select>;
 }

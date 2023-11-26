@@ -1,8 +1,10 @@
-import { Root, TableRow } from 'mdast';
-import { Restaurant, RestaurantLog } from './restaurant';
-import { parseYaml } from 'obsidian';
 import { AssertionError } from 'assert';
+import { Root, TableRow } from 'mdast';
 import moment from 'moment';
+import { parseYaml } from 'obsidian';
+import { Restaurant, RestaurantLog } from './restaurant';
+import { parseWikiLink } from 'src/common/wiki_link_utils';
+import { Cuisine } from '../cuisine/cuisine';
 
 
 export const restaurantFromAst = (name: string, ast: Root): Restaurant => {
@@ -24,7 +26,7 @@ export const restaurantFromAst = (name: string, ast: Root): Restaurant => {
         name,
         frontmatterData['distance'],
         frontmatterData['price'],
-        frontmatterData['cuisine'],
+        frontmatterData['cuisine'].map(parseWikiLink).map((it: string) => new Cuisine(it)),
         description,
         log
     )

@@ -4,6 +4,7 @@ import { AssertionError } from 'assert';
 import { IngredientUnit, IngredientUsage, Recipe, RecipeLog } from './recipe';
 import { Ingredient } from '../ingredient/ingredient';
 import moment from 'moment';
+import { parseWikiLink } from 'src/common/wiki_link_utils';
 
 export const recipeFromAst = (name: string, ast: Root): Recipe => {
     const frontmatter = ast.children[0];
@@ -37,8 +38,7 @@ export const recipeFromAst = (name: string, ast: Root): Recipe => {
 const ingredientUsageFromTableRow = (tableRow: TableRow): IngredientUsage => {
     const usageStringNode = tableRow.children[0].children[0];
     if (usageStringNode.type !== 'text') throw new AssertionError({message: "invalid ast", actual: usageStringNode.type})
-    const linkParts = usageStringNode.value.split('|');
-    const ingredientName = linkParts[1].replaceAll("]]", "");
+    const ingredientName = parseWikiLink(usageStringNode.value);
 
     const linkStringNode = tableRow.children[1].children[0];
     if (linkStringNode.type !== 'text') throw new AssertionError({message: "invalid ast", actual: linkStringNode.type})
