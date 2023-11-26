@@ -212,19 +212,8 @@ const SelectCuisinesContent = (props: {
 }) => {
     const { whereToEatState, setWhereToEatState } = props;
 
-    const [unitAutocompleteInputValues, setUnitAutocompleteInputValue] = useState<string | undefined>(undefined);
-    const handleAutocompleteInputValueChanged = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event?.target) {
-            setUnitAutocompleteInputValue(event.target.value);
-        }
-    }
 
-    const inputValue = unitAutocompleteInputValues || props.cuisines.first()?.name;
-    let options: string[] = [...props.cuisines.map(it => it.name)];
-    if (unitAutocompleteInputValues) {
-        options = [unitAutocompleteInputValues, ...options]
-    }
-    options = [... new Set(options)]
+    let options: string[] = props.cuisines.map(it => it.name);
 
     const cuisineLookup = useMemo(() => {
         const lookup: { [key: string]: Cuisine } = {};
@@ -245,11 +234,9 @@ const SelectCuisinesContent = (props: {
         sx={{ mt: 1 }}
         fullWidth
         options={options}
-        inputValue={inputValue}
         value={whereToEatState.selectedCuisines.map(it => it.name)}
         getOptionLabel={(option) => option}
         filterSelectedOptions
-        onInputChange={handleAutocompleteInputValueChanged}
         onChange={handleCuisinesChange}
         renderInput={(params) => (
             <TextField
