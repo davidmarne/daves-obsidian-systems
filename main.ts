@@ -2,6 +2,7 @@ import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { CreateRecipeModal } from 'src/eating/components/create_recipe';
 import { CreateRestaurantModal } from 'src/eating/components/create_restaurant';
 import { WhatToMakeModal } from 'src/eating/components/what_to_make';
+import { WhereToEatModal } from 'src/eating/components/where_to_eat';
 import EatingManager from 'src/eating/managers/eating_manager';
 import CuisineResourceAccess from 'src/eating/resource_access/cuisine/cuisine_resource_access';
 import IngredientResourceAccess from 'src/eating/resource_access/ingredient/ingredient_resource_access';
@@ -17,16 +18,16 @@ import ProjectResourceAccess from 'src/music/resource_access/project/project_res
 
 // Remember to rename these classes and interfaces!
 
-interface KitchenPluginSettings {
+interface DavesObsidianSystemsSettings {
 	kitchenDirectory: string;
 }
 
-const DEFAULT_SETTINGS: KitchenPluginSettings = {
+const DEFAULT_SETTINGS: DavesObsidianSystemsSettings = {
 	kitchenDirectory: 'kitchen'
 }
 
-export default class KitchenPlugin extends Plugin {
-	settings: KitchenPluginSettings;
+export default class DavesObsidianSystems extends Plugin {
+	settings: DavesObsidianSystemsSettings;
 
 	async onload() {
 		await this.loadSettings();
@@ -54,26 +55,34 @@ export default class KitchenPlugin extends Plugin {
 			projectResourceAccess);
 		
 		this.addCommand({
-			id: `kitchen-create-recipe-modal`,
-			name: `kitchen - create recipe`,
+			id: `eating-create-recipe-modal`,
+			name: `eating - create recipe`,
 			callback: () => {
 				new CreateRecipeModal(this.app, eatingManager).open();
 			}
 		});
 
 		this.addCommand({
-			id: `kitchen-create-restaurant`,
-			name: `kitchen - create restaurant`,
+			id: `eating-create-restaurant`,
+			name: `eating - create restaurant`,
 			callback: () => {
 				new CreateRestaurantModal(this.app, eatingManager).open();
 			}
 		});
 
 		this.addCommand({
-			id: `kitchen-what-to-make-modal`,
-			name: `kitchen - what to make?`,
+			id: `eating-what-to-make-modal`,
+			name: `eating - what to make?`,
 			callback: () => {
 				new WhatToMakeModal(this.app, eatingManager).open();
+			}
+		});
+
+		this.addCommand({
+			id: `eating-where-to-eat-modal`,
+			name: `eating - where to eat?`,
+			callback: () => {
+				new WhereToEatModal(this.app, eatingManager).open();
 			}
 		});
 
@@ -104,9 +113,9 @@ export default class KitchenPlugin extends Plugin {
 }
 
 class KitchenSettingTab extends PluginSettingTab {
-	plugin: KitchenPlugin;
+	plugin: DavesObsidianSystems;
 
-	constructor(app: App, plugin: KitchenPlugin) {
+	constructor(app: App, plugin: DavesObsidianSystems) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}

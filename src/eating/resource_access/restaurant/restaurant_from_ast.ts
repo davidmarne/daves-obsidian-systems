@@ -10,11 +10,13 @@ export const restaurantFromAst = (name: string, ast: Root): Restaurant => {
     if (frontmatter.type !== 'yaml') throw new AssertionError({message: "invalid ast", actual: frontmatter.type})
     const frontmatterData = parseYaml(frontmatter.value)
 
-    const descriptionNode = ast.children[4];
+    const descriptionParagraphNode = ast.children[2];
+    if (descriptionParagraphNode.type !== 'paragraph') throw new AssertionError({message: "invalid ast", actual: descriptionParagraphNode.type})
+    const descriptionNode = descriptionParagraphNode.children[0];
     if (descriptionNode.type !== 'text') throw new AssertionError({message: "invalid ast", actual: descriptionNode.type})
     const description = descriptionNode.value;
 
-    const logTable = ast.children[6];
+    const logTable = ast.children[4];
     if (logTable.type !== 'table') throw new AssertionError({message: "invalid ast", actual: logTable.type})
     const log = logTable.children.filter((_, idx) => idx != 0).map(it => logEntryFromTableRow(it))
 

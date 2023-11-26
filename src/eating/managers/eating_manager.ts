@@ -56,7 +56,15 @@ export default class EatingManager {
         return await this.cuisineResourceAccess.readAll();
     }
 
+    async readAllRestaurants() {
+        return await this.restaurantResourceAccess.readAll();
+    }
+
     async addToRecipeLog(recipe: Recipe) {
-        // TODO
+        console.log("TODO: addToRecipeLog", recipe);
+    }
+
+    async addToRestaurantLog(restaurant: Restaurant) {
+        console.log("TODO: addToRestaurantLog", restaurant);
     }
 }
