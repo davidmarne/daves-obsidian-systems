@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id": "daves-obsidian-systems-plugin",
+	"name": "Dave's Obsidian Systems",
+	"version": "0.0.3",
 	"minAppVersion": "0.15.0",
-	"description": "This is a sample plugin for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
+	"description": "This is a plugin for dave's Obsidian systems.",
 	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"authorUrl": "https://github.com/davidmarne/daves-obsidian-systems",
+	"fundingUrl": "https://www.buymeacoffee.com/davemarne",
 	"isDesktopOnly": false
 }
