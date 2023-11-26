@@ -5,7 +5,7 @@ import { App } from "obsidian";
 import { inspirationFromAst } from "./inspiration_from_ast";
 import { inspirationToAst } from "./inspiration_to_ast";
 
-export const inspirationsPath = 'eating/inspiration/';
+export const inspirationsPath = 'music/inspiration/';
 
 export default class InspirationResourceAccess extends ResourceAccess<Inspiration> {
     constructor(app: App) {

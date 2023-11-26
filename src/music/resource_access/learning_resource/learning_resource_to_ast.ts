@@ -19,8 +19,10 @@ const frontMatter = (learningResource: LearningResource): Yaml => {
     }
 }
 
-const frontMatterData = (learning_resource: LearningResource): object => {
+const frontMatterData = (learningResource: LearningResource): object => {
     return {
         $schema: `learning_resource.schema.json`,
+        kind: learningResource.kind,
+        source: learningResource.source,
     }
 }

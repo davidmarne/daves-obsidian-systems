@@ -24,6 +24,7 @@
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
 		"@emotion/styled": "^11.11.0",
+		"@mui/icons-material": "^5.14.18",
 		"@mui/material": "^5.14.17",
 		"@types/mdast": "^4.0.3",
 		"@types/moment": "^2.13.0",

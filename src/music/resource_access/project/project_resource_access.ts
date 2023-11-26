@@ -5,7 +5,7 @@ import { App } from "obsidian";
 import { projectFromAst } from "./project_from_ast";
 import { projectToAst } from "./project_to_ast";
 
-export const projectsPath = 'eating/project/';
+export const projectsPath = 'music/project/';
 
 export default class ProjectResourceAccess extends ResourceAccess<Project> {
     constructor(app: App) {

@@ -22,5 +22,8 @@ const frontMatter = (inspiration: Inspiration): Yaml => {
 const frontMatterData = (inspiration: Inspiration): object => {
     return {
         $schema: `inspiration.schema.json`,
+        kind: inspiration.kind,
+        source: inspiration.source,
+        projects: inspiration.projects.map(it => it.link())
     }
 }

@@ -5,7 +5,7 @@ import { App } from "obsidian";
 import { lyricFromAst } from "./lyric_from_ast";
 import { lyricToAst } from "./lyric_to_ast";
 
-export const lyricsPath = 'eating/lyric/';
+export const lyricsPath = 'music/lyric/';
 
 export default class LyricResourceAccess extends ResourceAccess<Lyric> {
     constructor(app: App) {

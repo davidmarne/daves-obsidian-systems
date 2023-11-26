@@ -5,7 +5,7 @@ import { App } from "obsidian";
 import { practiceExerciseFromAst } from "./practice_exercise_from_ast";
 import { practiceExerciseToAst } from "./practice_exercise_to_ast";
 
-export const practiceExercisesPath = 'eating/practice_exercise/';
+export const practiceExercisesPath = 'music/practice_exercise/';
 
 export default class PracticeExerciseResourceAccess extends ResourceAccess<PracticeExercise> {
     constructor(app: App) {

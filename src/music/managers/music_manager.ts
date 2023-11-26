@@ -1,8 +1,12 @@
+import { TFile } from "obsidian";
+import { Inspiration } from "../resource_access/inspiration/inspiration";
 import InspirationResourceAccess from "../resource_access/inspiration/inspiration_resource_access";
 import LearningResourceResourceAccess from "../resource_access/learning_resource/learning_resource_resource_access";
 import LyricResourceAccess from "../resource_access/lyric/lyric_resource_access";
 import PracticeExerciseResourceAccess from "../resource_access/practice_exercise/practice_exercise_resource_access";
 import ProjectResourceAccess from "../resource_access/project/project_resource_access";
+import { PracticeExercise } from "../resource_access/practice_exercise/practice_exercise";
+import { LearningResource } from "../resource_access/learning_resource/learning_resource";
 
 
 export default class MusicManager {
@@ -25,6 +29,18 @@ export default class MusicManager {
         this.projectResourceAccess = projectResourceAccess;
     }
 
+    async createInspiration(newInspiration: Inspiration): Promise<TFile> {
+        return this.inspirationResourceAccess.writeResource(newInspiration);
+    }
+
+    async createPracticeExercise(newPracticeExercise: PracticeExercise): Promise<TFile> {
+        return this.practiceExerciseResourceAccess.writeResource(newPracticeExercise);
+    }
+
+    async createLearningResource(newLearningResource: LearningResource): Promise<TFile> {
+        return this.learningResourceResourceAccess.writeResource(newLearningResource);
+    }
+
     async readAllInspirations() {
         return await this.inspirationResourceAccess.readAll();
     }
@@ -37,4 +53,7 @@ export default class MusicManager {
         return await this.practiceExerciseResourceAccess.readAll();
     }
 
+    async readAllProjects() {
+        return await this.projectResourceAccess.readAll();
+    }
 }

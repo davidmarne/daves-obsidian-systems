@@ -8,7 +8,14 @@ import CuisineResourceAccess from 'src/eating/resource_access/cuisine/cuisine_re
 import IngredientResourceAccess from 'src/eating/resource_access/ingredient/ingredient_resource_access';
 import RecipeResourceAccess from 'src/eating/resource_access/recipe/recipe_resource_access';
 import RestaurantResourceAccess from 'src/eating/resource_access/restaurant/restaurant_resource_access';
+import { CreateEntertainmentContentModal } from 'src/entertainment/components/create_entertainment_content';
+import EntertainmentManager from 'src/entertainment/manager/entertainment_manager';
+import EntertainmentContentResourceAccess from 'src/entertainment/resource_access/entertainment_content/entertainment_content_resource_access';
+import { CreateInspirationModal } from 'src/music/components/create_inspiration';
+import { CreateLearningResourceModal } from 'src/music/components/create_learning_resource';
+import { CreatePracticeExerciseModal } from 'src/music/components/create_practice_exercise';
 import { WhatToDoModal } from 'src/music/components/what_to_do';
+import { WhatToDoModal as WhatToDoEntertainment } from 'src/entertainment/components/what_to_do';
 import MusicManager from 'src/music/managers/music_manager';
 import InspirationResourceAccess from 'src/music/resource_access/inspiration/inspiration_resource_access';
 import LearningResourceResourceAccess from 'src/music/resource_access/learning_resource/learning_resource_resource_access';
@@ -53,6 +60,10 @@ export default class DavesObsidianSystems extends Plugin {
 			lyricResourceAccess,
 			practiceResourceAccess,
 			projectResourceAccess);
+
+		const entertainmentContentResourceAccess = new EntertainmentContentResourceAccess(this.app);
+		const entertainmentManager = new EntertainmentManager(
+			entertainmentContentResourceAccess);
 		
 		this.addCommand({
 			id: `eating-create-recipe-modal`,
@@ -94,8 +105,45 @@ export default class DavesObsidianSystems extends Plugin {
 			}
 		});
 		
+		this.addCommand({
+			id: `music-create-inspiration`,
+			name: `music - create inspiration`,
+			callback: () => {
+				new CreateInspirationModal(this.app, musicManager).open();
+			}
+		});
+		
+		this.addCommand({
+			id: `music-create-practice-exercise`,
+			name: `music - create practice exercise`,
+			callback: () => {
+				new CreatePracticeExerciseModal(this.app, musicManager).open();
+			}
+		});
 
+		this.addCommand({
+			id: `music-create-learning-resource`,
+			name: `music - create learning resource`,
+			callback: () => {
+				new CreateLearningResourceModal(this.app, musicManager).open();
+			}
+		});
 
+		this.addCommand({
+			id: `entertainment-what-to-do`,
+			name: `entertainment - what to do?`,
+			callback: () => {
+				new WhatToDoEntertainment(this.app, entertainmentManager).open();
+			}
+		});
+		
+		this.addCommand({
+			id: `entertainment-create-entertainement-content`,
+			name: `entertainment - create entertainement content`,
+			callback: () => {
+				new CreateEntertainmentContentModal(this.app, entertainmentManager).open();
+			}
+		});
 		this.addSettingTab(new KitchenSettingTab(this.app, this));
 	}
 

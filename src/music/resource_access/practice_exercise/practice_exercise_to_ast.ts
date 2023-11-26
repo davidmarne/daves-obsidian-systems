@@ -22,5 +22,7 @@ const frontMatter = (practiceExercise: PracticeExercise): Yaml => {
 const frontMatterData = (practiceExercise: PracticeExercise): object => {
     return {
         $schema: `practice_exercise.schema.json`,
+        instrument: practiceExercise.instrument,
+        source: practiceExercise.source,
     }
 }

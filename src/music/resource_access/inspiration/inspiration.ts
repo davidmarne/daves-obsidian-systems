@@ -4,14 +4,18 @@ import { Note } from '../../../common/note';
 import { Project } from '../project/project';
 import { inspirationsPath } from './inspiration_resource_access';
 
-type InspirationKind = "sample" | "reference_track" | "dj_set" | "sound" | "effect" | "composition_technique" | "melody" | "bass_line" | "drum_pattern" | "chord_progression" | "lyric_concept";
-type InspirationKinds = ["sample", "reference_track", "dj_set", "sound", "effect", "composition_technique", "melody", "bass_line", "drum_pattern", "chord_progression", "lyric_concept"];
+export const InspirationKinds = ["sample", "reference_track", "dj_set", "sound", "effect", "composition_technique", "melody", "bass_line", "drum_pattern", "chord_progression", "lyric_concept"] as const;
+export type InspirationKind = typeof InspirationKinds[number];
 
 export class Inspiration extends Note {
     readonly kind: InspirationKind;
-    readonly projects: string[];
+    readonly projects: Project[];
+    readonly source?: string;
 
-    constructor(name: string) {
+    constructor(name: string, kind: InspirationKind, projects: Project[], source?: string) {
         super(name, inspirationsPath);
+        this.kind = kind;
+        this.projects = projects;
+        this.source = source;
     }
 }

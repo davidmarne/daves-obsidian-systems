@@ -1,25 +1,19 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { IngredientUnits, IngredientUsage, Recipe, RecipeKind, RecipeKinds } from 'src/eating/resource_access/recipe/recipe';
-import { useCallback, useState, useMemo, ChangeEvent, SetStateAction, Dispatch } from 'react';
 import { Autocomplete, Container, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
-import { Ingredient } from 'src/eating/resource_access/ingredient/ingredient';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import * as React from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useStateWithPartialUpdater } from 'src/common/react_util';
 import { Inspiration } from 'src/music/resource_access/inspiration/inspiration';
-import { PracticeExercise } from 'src/music/resource_access/practice_exercise/practice_exercise';
 import { LearningResource } from 'src/music/resource_access/learning_resource/learning_resource';
-import { stat } from 'fs';
+import { PracticeExercise } from 'src/music/resource_access/practice_exercise/practice_exercise';
 
 const Kinds = [ "Inspiration", "Practice Exercise", "Learning Resource"] as const;
 type Kind = typeof Kinds[number];
 
 interface WhatToDoState {
     selectedKind: Kind,
-    selection?: Inspiration | PracticeExercise | LearningResource,
+    selection: Inspiration | PracticeExercise | LearningResource | null,
 }
 
 export const WhatToDoForm = (props: {
@@ -28,26 +22,25 @@ export const WhatToDoForm = (props: {
     leaningResources: LearningResource[],
     handleSubmit: (selection: Inspiration | PracticeExercise | LearningResource) => void,
 }) => {
-    const [state, setState] = useState<WhatToDoState>({
+    const [state, setState] = useStateWithPartialUpdater<WhatToDoState>({
         selectedKind: "Inspiration",
+        selection: props.inspirations.length > 0 ? props.inspirations[0] : null
     })
 
-    const handleKindChange = useCallback((event: SelectChangeEvent<Kind>) => {
+    const handleKindChange = (event: SelectChangeEvent<Kind>) => {
         const kind = event.target.value;
         setState({
             selectedKind: kind as Kind,
         })
-    }, [])
+    };
 
-    const handleSelectionChange = useCallback((_: any, value: Inspiration | PracticeExercise | LearningResource) => {
-        setState(Object.assign({}, state, {
-            selection: value
-        }));
-    }, [state])
+    const handleSelectionChange = (_: any, value: Inspiration | PracticeExercise | LearningResource) => {
+        setState({selection: value});
+    };
 
-    const handleSubmit = useCallback(() => {
+    const handleSubmit = () => {
         props.handleSubmit(state.selection!)
-    }, [state])
+    };
 
     const selectOptions = useMemo(() => {
         switch (state.selectedKind) {

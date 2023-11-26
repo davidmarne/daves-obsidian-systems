@@ -22,5 +22,7 @@ const frontMatter = (entertainment_content: EntertainmentContent): Yaml => {
 const frontMatterData = (entertainment_content: EntertainmentContent): object => {
     return {
         $schema: `entertainment_content.schema.json`,
+        kind: entertainment_content.kind,
+        state: entertainment_content.state,
     }
 }

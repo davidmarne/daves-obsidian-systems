@@ -1,13 +1,13 @@
 import { renderMuiInShadowDom } from "src/common/Shadow";
 import { App, Modal, TFile } from 'obsidian';
 import * as React from 'react';
-import MusicManager from "../managers/music_manager";
-import { WhatToDoForm } from "./internal/WhatToDoForm";
+import EntertainmentManager from "../manager/entertainment_manager";
+import { WhatToDoForm } from "./internal/WhatToDo";
 
 export class WhatToDoModal extends Modal {
-    manager: MusicManager;
+    manager: EntertainmentManager;
 
-    constructor(app: App, manager: MusicManager) {
+    constructor(app: App, manager: EntertainmentManager) {
         super(app);
         this.manager = manager;
     }
@@ -24,16 +24,12 @@ export class WhatToDoModal extends Modal {
     }
 }
 
-const renderForm = async (app: App, musicManager: MusicManager, container: HTMLElement, close: () => void) => {
-    const inpsirations = await musicManager.readAllInspirations();
-    const practiceExercises = await musicManager.readAllPracticeExercises();
-    const learningResources = await musicManager.readAllLearningResources();
+const renderForm = async (app: App, entertainmentManager: EntertainmentManager, container: HTMLElement, close: () => void) => {
+    const entertainmentContents = await entertainmentManager.readAllEntertainmentContent();
     renderMuiInShadowDom(
         container,
         <WhatToDoForm
-            inspirations={inpsirations}
-            practiceExercises={practiceExercises}
-            leaningResources={learningResources}
+            entertainmentContents={entertainmentContents}
             handleSubmit={(selection) => {
                 const tfile =  app.vault.getAbstractFileByPath(selection.path())
                 if (tfile !== null && tfile instanceof TFile) {

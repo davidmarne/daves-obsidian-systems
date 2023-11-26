@@ -5,7 +5,7 @@ import { App } from "obsidian";
 import { entertainmentContentFromAst } from "./entertainment_content_from_ast";
 import { entertainmentContentToAst } from "./entertainment_content_to_ast";
 
-export const entertainmentContentsPath = 'eating/entertainment_content/';
+export const entertainmentContentsPath = 'entertainment/entertainment_content/';
 
 export default class EntertainmentContentResourceAccess extends ResourceAccess<EntertainmentContent> {
     constructor(app: App) {

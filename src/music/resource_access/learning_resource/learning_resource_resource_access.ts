@@ -5,7 +5,7 @@ import { App } from "obsidian";
 import { learningResourceFromAst } from "./learning_resource_from_ast";
 import { learningResourceToAst } from "./learning_resource_to_ast";
 
-export const learningResourcesPath = 'eating/learning_resource/';
+export const learningResourcesPath = 'music/learning_resource/';
 
 export default class LearningResourceResourceAccess extends ResourceAccess<LearningResource> {
     constructor(app: App) {
