@@ -22,6 +22,23 @@ export const renderMuiInShadowDom = (container: HTMLElement, child: ReactElement
         palette: {
             mode: 'dark',
         },
+        components: {
+            MuiPopover: {
+              defaultProps: {
+                container: shadowRootElement
+              }
+            },
+            MuiPopper: {
+              defaultProps: {
+                container: shadowRootElement
+              }
+            },
+            MuiModal: {
+              defaultProps: {
+                container: shadowRootElement
+              }
+            },
+        }
     });
 
     createRoot(shadowRootElement).render(

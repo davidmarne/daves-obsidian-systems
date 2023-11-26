@@ -1,16 +1,14 @@
-import * as React from 'react';
+import { Autocomplete, Container, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
+import Button from '@mui/material/Button';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { useCallback, useState, useMemo, ChangeEvent, SetStateAction, Dispatch } from 'react';
-import { Autocomplete, Container, FormControl, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
-import { Ingredient } from 'src/eating/resource_access/ingredient/ingredient';
-import { Restaurant, RestaurantDistance, RestaurantDistances, RestaurantPrice, RestaurantPrices } from 'src/eating/resource_access/restaurant/restaurant';
-import { Cuisine } from 'src/eating/resource_access/cuisine/cuisine';
+import Stepper from '@mui/material/Stepper';
+import * as React from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import { withPartial } from 'src/common/react_util';
+import { Cuisine } from 'src/eating/resource_access/cuisine/cuisine';
+import { Restaurant, RestaurantDistance, RestaurantDistances, RestaurantPrice, RestaurantPrices } from 'src/eating/resource_access/restaurant/restaurant';
 
 const steps = ['Select Criteria', 'Select Restaurant'] as const;
 
