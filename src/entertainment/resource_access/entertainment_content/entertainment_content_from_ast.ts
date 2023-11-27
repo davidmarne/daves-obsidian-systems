@@ -13,5 +13,7 @@ export const entertainmentContentFromAst = (name: string, ast: Root): Entertainm
         name,
         frontmatterData["kind"],
         frontmatterData["state"],
+        frontmatterData["anticipation"],
+        frontmatterData["rating"],
     )
 }

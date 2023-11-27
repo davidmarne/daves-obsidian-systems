@@ -24,5 +24,7 @@ const frontMatterData = (entertainment_content: EntertainmentContent): object =>
         $schema: `entertainment_content.schema.json`,
         kind: entertainment_content.kind,
         state: entertainment_content.state,
+        anticipation: entertainment_content.anticipation,
+        rating: entertainment_content.rating,
     }
 }

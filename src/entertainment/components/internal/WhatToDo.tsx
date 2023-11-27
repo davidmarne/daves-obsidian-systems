@@ -137,7 +137,7 @@ const SelectEntertainmentContentsContent = (props: {
         label="Kinds"
         sx={{ mt: 1 }}
         fullWidth
-        value={props.whereToEatState.selection?.name}
+        value={props.whereToEatState.selection?.name || ''}
         onChange={handleEntertainmentContentsChange}>
         {Object.keys(lookup).map(content => <MenuItem
             key={content}

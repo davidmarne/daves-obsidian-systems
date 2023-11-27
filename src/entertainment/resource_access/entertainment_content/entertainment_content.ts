@@ -8,52 +8,20 @@ export type EntertainmentContentKind = typeof EntertainmentContentKinds[number];
 export const EntertainmentContentStates = ["not_started", "in_progress", "finished"] as const;
 export type EntertainmentContentState = typeof EntertainmentContentStates[number];
 
-interface EntertainmentContentStateValue {
-    state: EntertainmentContentState,
-}
-
-interface NotStarted extends EntertainmentContentStateValue {
-    state: "not_started",
-    anticipation: "low" | "medium" | "high",
-}
-
-interface InProgress extends EntertainmentContentStateValue {
-    state: "in_progress",
-}
-
-interface Finished extends EntertainmentContentStateValue {
-    state: "finished",
-    rewind: boolean,
-    rating: number
-}
-
-export const newEntertainmentContentStateValue = (state: EntertainmentContentState): NotStarted | InProgress | Finished => {
-    switch (state) {
-        case "not_started":
-            return {
-                state: "not_started",
-                anticipation: "medium",
-            }
-        case "in_progress":
-            return {
-                state: "in_progress",
-            }
-        case "finished":
-            return {
-                state: "finished",
-                rewind: false,
-                rating: 0,
-            }
-    }
-}
+export const EntertainmentContentAnticipations = ["none", "low", "medium", "high"] as const;
+export type EntertainmentContentAnticipation = typeof EntertainmentContentAnticipations[number];
 
 export class EntertainmentContent extends Note {
     readonly kind: EntertainmentContentKind;
-    readonly state: EntertainmentContentStateValue;
+    readonly state: EntertainmentContentState;
+    readonly anticipation: EntertainmentContentAnticipation;
+    readonly rating?: number;
 
-    constructor(name: string, kind: EntertainmentContentKind, state: EntertainmentContentStateValue) {
+    constructor(name: string, kind: EntertainmentContentKind, state: EntertainmentContentState, anticipation: EntertainmentContentAnticipation, rating?: number) {
         super(name, entertainmentContentsPath);
         this.kind = kind;
         this.state = state;
+        this.anticipation = anticipation;
+        this.rating = rating;
     }
 }
