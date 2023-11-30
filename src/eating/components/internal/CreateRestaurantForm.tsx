@@ -20,14 +20,15 @@ interface CreatRestaurantState {
 }
 
 export const CreateRestaurantForm = (props: {
+  defaultRestaurant?: Restaurant,
   cuisines: Cuisine[],
   handleSubmit: (restaurant: Restaurant) => void,
 }) => {
   const [restaurantState, setRestaurantState] = useState<CreatRestaurantState>({
-    name: '',
-    distance: '🚗',
-    price: '$',
-    selectedCuisines: []
+    name: props.defaultRestaurant?.name || '',
+    distance: props.defaultRestaurant?.distance || '🚗',
+    price: props.defaultRestaurant?.price || '$',
+    selectedCuisines: props.defaultRestaurant?.cuisines.map(it => it.name) || []
   });
 
   const handleSubmit = useCallback(() => {

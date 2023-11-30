@@ -14,13 +14,14 @@ interface CreatPracticeExerciseState {
 }
 
 export const CreatePracticeExerciseForm = (props: {
+  defaultPracticeExercise?: PracticeExercise,
   defaultSource?: string,
   handleSubmit: (practiceExercise: PracticeExercise) => void,
 }) => {
   const [practiceExerciseState, setPracticeExerciseState] = useStateWithPartialUpdater<CreatPracticeExerciseState>({
-    name: '',
-    selectedInstrument: Instruments[0],
-    source: props.defaultSource || '',
+    name: props.defaultPracticeExercise?.name || '',
+    selectedInstrument: props.defaultPracticeExercise?.instrument || Instruments[0],
+    source: props.defaultPracticeExercise?.source || props.defaultSource || '',
   });
 
   const handleSubmit = () => props.handleSubmit(

@@ -31,16 +31,27 @@ const defaultUsage = (ingredient: string): IngredientUsage => {
   }
 }
 
+const defaultUsageMap = (usages: IngredientUsage[]) => {
+  const map: {[key: string]: IngredientUsage} = {};
+  for (const usage of usages) {
+    map[usage.ingredient.name] =  usage;
+  }
+  return map;
+}
+
 export const CreateRecipeForm = (props: {
+  defaultRecipe?: Recipe,
   ingredients: string[],
   handleSubmit: (recipe: Recipe) => void,
 }) => {
   const [recipeState, setRecipeState] = useState<CreatRecipePageOneState>({
     activeStep: 0,
-    name: '',
-    kind: 'entre',
-    selectedIngredients: [],
-    ingredientUsages: {},
+    name: props.defaultRecipe?.name || '',
+    kind: props.defaultRecipe?.kind || 'entre',
+    selectedIngredients: props.defaultRecipe?.ingredientUsages.map(it => it.ingredient.name) || [],
+    ingredientUsages: props.defaultRecipe 
+      ? defaultUsageMap(props.defaultRecipe.ingredientUsages) 
+      : {},
   });
 
   const handleNext = useCallback(() => {

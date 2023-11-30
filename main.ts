@@ -8,16 +8,19 @@ import { getRestaurantEditView } from 'src/eating/components/create_restaurant';
 import EatingManager from 'src/eating/managers/eating_manager';
 import CuisineResourceAccess from 'src/eating/resource_access/cuisine/cuisine_resource_access';
 import IngredientResourceAccess from 'src/eating/resource_access/ingredient/ingredient_resource_access';
-import RecipeResourceAccess from 'src/eating/resource_access/recipe/recipe_resource_access';
-import RestaurantResourceAccess from 'src/eating/resource_access/restaurant/restaurant_resource_access';
+import RecipeResourceAccess, { recipesPath } from 'src/eating/resource_access/recipe/recipe_resource_access';
+import RestaurantResourceAccess, { restaurantPath } from 'src/eating/resource_access/restaurant/restaurant_resource_access';
+import { getEntertainmentContentEditView } from 'src/entertainment/components/create_entertainment_content';
 import EntertainmentManager from 'src/entertainment/manager/entertainment_manager';
-import EntertainmentContentResourceAccess from 'src/entertainment/resource_access/entertainment_content/entertainment_content_resource_access';
+import EntertainmentContentResourceAccess, { entertainmentContentsPath } from 'src/entertainment/resource_access/entertainment_content/entertainment_content_resource_access';
 import { getInspirationEditView } from 'src/music/components/create_inspiration';
+import { getLearningResourceEditView } from 'src/music/components/create_learning_resource';
+import { getPracticeExerciseEditView } from 'src/music/components/create_practice_exercise';
 import MusicManager from 'src/music/managers/music_manager';
-import InspirationResourceAccess from 'src/music/resource_access/inspiration/inspiration_resource_access';
-import LearningResourceResourceAccess from 'src/music/resource_access/learning_resource/learning_resource_resource_access';
+import InspirationResourceAccess, { inspirationsPath } from 'src/music/resource_access/inspiration/inspiration_resource_access';
+import LearningResourceResourceAccess, { learningResourcesPath } from 'src/music/resource_access/learning_resource/learning_resource_resource_access';
 import LyricResourceAccess from 'src/music/resource_access/lyric/lyric_resource_access';
-import PracticeExerciseResourceAccess from 'src/music/resource_access/practice_exercise/practice_exercise_resource_access';
+import PracticeExerciseResourceAccess, { practiceExercisesPath } from 'src/music/resource_access/practice_exercise/practice_exercise_resource_access';
 import ProjectResourceAccess from 'src/music/resource_access/project/project_resource_access';
 
 // Remember to rename these classes and interfaces!
@@ -64,11 +67,13 @@ export default class DavesObsidianSystems extends Plugin {
 		const entertainmentManager = new EntertainmentManager(
 			entertainmentContentResourceAccess);
 
-		const components: EditResourceComponentFactories = {
-			"eating/restaurant": getRestaurantEditView(eatingManager),
-			"eating/recipe": getRecipeEditView(eatingManager),
-			"music/inspiration": getInspirationEditView(musicManager)
-		}
+		const components: EditResourceComponentFactories = {}
+		components[restaurantPath] = getRestaurantEditView(this.app, eatingManager);
+		components[recipesPath] = getRecipeEditView(this.app, eatingManager);
+		components[inspirationsPath] = getInspirationEditView(this.app, musicManager);
+		components[practiceExercisesPath] = getPracticeExerciseEditView(this.app, musicManager);
+		components[learningResourcesPath] = getLearningResourceEditView(this.app, musicManager);
+		components[entertainmentContentsPath] = getEntertainmentContentEditView(this.app, entertainmentManager);
 
 		this.registerView(EDIT_RESOURCE_VIEW_TYPE_KEY, (leaf) => {
 			this.editResourceView = new EditResourceView(leaf, this, components)
@@ -152,29 +157,29 @@ export default class DavesObsidianSystems extends Plugin {
 		// 	}
 		// });
 
-		// this.addCommand({
-		// 	id: `eating-what-to-make-modal`,
-		// 	name: `eating - what to make?`,
-		// 	callback: () => {
-		// 		new WhatToMakeModal(this.app, eatingManager).open();
-		// 	}
-		// });
+		this.addCommand({
+			id: `eating-what-to-make-modal`,
+			name: `eating - what to make?`,
+			callback: () => {
+				new WhatToMakeModal(this.app, eatingManager).open();
+			}
+		});
 
-		// this.addCommand({
-		// 	id: `eating-where-to-eat-modal`,
-		// 	name: `eating - where to eat?`,
-		// 	callback: () => {
-		// 		new WhereToEatModal(this.app, eatingManager).open();
-		// 	}
-		// });
+		this.addCommand({
+			id: `eating-where-to-eat-modal`,
+			name: `eating - where to eat?`,
+			callback: () => {
+				new WhereToEatModal(this.app, eatingManager).open();
+			}
+		});
 
-		// this.addCommand({
-		// 	id: `music-what-to-do`,
-		// 	name: `music - what to do?`,
-		// 	callback: () => {
-		// 		new WhatToDoModal(this.app, musicManager).open();
-		// 	}
-		// });
+		this.addCommand({
+			id: `music-what-to-do`,
+			name: `music - what to do?`,
+			callback: () => {
+				new WhatToDoModal(this.app, musicManager).open();
+			}
+		});
 		
 		// this.addCommand({
 		// 	id: `music-create-inspiration`,
@@ -200,13 +205,13 @@ export default class DavesObsidianSystems extends Plugin {
 		// 	}
 		// });
 
-		// this.addCommand({
-		// 	id: `entertainment-what-to-do`,
-		// 	name: `entertainment - what to do?`,
-		// 	callback: () => {
-		// 		new WhatToDoEntertainment(this.app, entertainmentManager).open();
-		// 	}
-		// });
+		this.addCommand({
+			id: `entertainment-what-to-do`,
+			name: `entertainment - what to do?`,
+			callback: () => {
+				new WhatToDoEntertainment(this.app, entertainmentManager).open();
+			}
+		});
 		
 		// this.addCommand({
 		// 	id: `entertainment-create-entertainement-content`,

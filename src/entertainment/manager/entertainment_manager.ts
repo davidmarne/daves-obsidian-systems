@@ -16,4 +16,8 @@ export default class EntertainmentManager {
     async readAllEntertainmentContent() {
         return await this.entertainmentContentResourceAccess.readAll();
     }
+
+    async readEntertainmentContent(path: string) {
+        return this.entertainmentContentResourceAccess.readResourceByPath(path);
+    }
 }

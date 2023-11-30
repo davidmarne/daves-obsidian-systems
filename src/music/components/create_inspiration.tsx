@@ -6,43 +6,7 @@ import MusicManager from '../managers/music_manager';
 import { getUrlStringFromClipboard } from 'src/common/url_util';
 import { Inspiration } from '../resource_access/inspiration/inspiration';
 
-export class CreateInspirationModal extends Modal {
-    manager: MusicManager;
-
-    constructor(app: App, manager: MusicManager) {
-        super(app);
-        this.manager = manager;
-    }
-
-    onOpen() {
-        const { contentEl } = this;
-        contentEl.empty();
-        renderForm(this.app, this.manager, contentEl, () => this.close())
-    }
-
-    onClose() {
-        const { contentEl } = this;
-        contentEl.empty();
-    }
-}
-
-const renderForm = async (app: App, musicManager: MusicManager, container: HTMLElement, close: () => void) => {
-    const projects = await musicManager.readAllProjects();
-    const defaultSource = await getUrlStringFromClipboard();
-    renderMuiInShadowDom(
-        container,
-        <CreateInspirationForm
-            defaultSource={defaultSource}
-            projects={projects}
-            handleSubmit={async (inspiration) => {
-                const tfile = await musicManager.createInspiration(inspiration);
-                app.workspace.getLeaf(false).openFile(tfile);
-                close();
-            }} />
-    );
-}
-
-export const getInspirationEditView = (musicManager: MusicManager) => async (path?: string, onSubmit?: (inspiration: Inspiration) => void) => {
+export const getInspirationEditView = (app: App, musicManager: MusicManager) => async (path?: string, onSubmit?: (inspiration: Inspiration) => void) => {
     const projects = await musicManager.readAllProjects();
     const defaultInspiration = path !== undefined 
         ? await musicManager.readInspiration(path) 
@@ -55,8 +19,7 @@ export const getInspirationEditView = (musicManager: MusicManager) => async (pat
         projects={projects}
         handleSubmit={async (inspiration) => {
             const tfile = await musicManager.createInspiration(inspiration);
-            if (onSubmit) { 
-                onSubmit(inspiration);
-            }
+            app.workspace.getLeaf(false).openFile(tfile);
+            onSubmit && onSubmit(inspiration);
         }} />;
 }

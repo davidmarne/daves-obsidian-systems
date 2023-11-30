@@ -14,13 +14,14 @@ interface CreatLearningResourceState {
 }
 
 export const CreateLearningResourceForm = (props: {
+  defaultLearningResource?: LearningResource,
   defaultSource?: string,
   handleSubmit: (practiceExercise: LearningResource) => void,
 }) => {
   const [learningResourceState, setLearningResourceState] = useStateWithPartialUpdater<CreatLearningResourceState>({
-    name: '',
-    selectedKind: LearningResourceKinds[0],
-    source: props.defaultSource || '',
+    name: props.defaultLearningResource?.name || '',
+    selectedKind: props.defaultLearningResource?.kind || LearningResourceKinds[0],
+    source: props.defaultLearningResource?.source || props.defaultSource || '',
   });
 
   const handleSubmit = () => props.handleSubmit(

@@ -5,7 +5,6 @@ import * as React from 'react';
 import { ChangeEvent } from 'react';
 import { useStateWithPartialUpdater } from 'src/common/react_util';
 import { EntertainmentContentKind, EntertainmentContent, EntertainmentContentKinds, EntertainmentContentState, EntertainmentContentStates, EntertainmentContentAnticipation, EntertainmentContentAnticipations } from 'src/entertainment/resource_access/entertainment_content/entertainment_content';
-import { Project } from 'src/music/resource_access/project/project';
 
 
 interface CreateEntertainmentContentState {
@@ -17,14 +16,15 @@ interface CreateEntertainmentContentState {
 }
 
 export const CreateEntertainmentContentForm = (props: {
+  defaultEntertainmentContent?: EntertainmentContent,
   handleSubmit: (restaurant: EntertainmentContent) => void,
 }) => {
   const [entertainementContentState, setEntertainmentContentState] = useStateWithPartialUpdater<CreateEntertainmentContentState>({
-    name: '',
-    selectedAnticipation: EntertainmentContentAnticipations[0],
-    selectedKind: EntertainmentContentKinds[0],
-    selectedState: EntertainmentContentStates[0],
-    rating: 0,
+    name: props.defaultEntertainmentContent?.name || '',
+    selectedAnticipation: props.defaultEntertainmentContent?.anticipation || EntertainmentContentAnticipations[0],
+    selectedKind: props.defaultEntertainmentContent?.kind || EntertainmentContentKinds[0],
+    selectedState: props.defaultEntertainmentContent?.state || EntertainmentContentStates[0],
+    rating: props.defaultEntertainmentContent?.rating || 0,
   });
 
   const handleSubmit = () => props.handleSubmit(

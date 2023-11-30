@@ -4,35 +4,18 @@ import { renderMuiInShadowDom } from "src/common/Shadow";
 import { CreateEntertainmentContentForm } from "./internal/CreateEntertainmentContentForm";
 import { getUrlStringFromClipboard } from 'src/common/url_util';
 import EntertainmentManager from '../manager/entertainment_manager';
+import { EntertainmentContent } from '../resource_access/entertainment_content/entertainment_content';
 
-export class CreateEntertainmentContentModal extends Modal {
-    manager: EntertainmentManager;
+export const getEntertainmentContentEditView = (app: App, manager: EntertainmentManager) => async (path?: string, onSubmit?: (entertainmentContent: EntertainmentContent) => void) => {
+    const defaultEntertainmentContent = path !== undefined 
+        ? await manager.readEntertainmentContent(path) 
+        : undefined;
 
-    constructor(app: App, manager: EntertainmentManager) {
-        super(app);
-        this.manager = manager;
-    }
-
-    onOpen() {
-        const { contentEl } = this;
-        contentEl.empty();
-        renderForm(this.app, this.manager, contentEl, () => this.close())
-    }
-
-    onClose() {
-        const { contentEl } = this;
-        contentEl.empty();
-    }
-}
-
-const renderForm = async (app: App, manager: EntertainmentManager, container: HTMLElement, close: () => void) => {
-    renderMuiInShadowDom(
-        container,
-        <CreateEntertainmentContentForm
-            handleSubmit={async (entertainmentContent) => {
-                const tfile = await manager.createEntertainmentContent(entertainmentContent);
-                app.workspace.getLeaf(false).openFile(tfile);
-                close();
-            }} />
-    );
+    return <CreateEntertainmentContentForm
+        defaultEntertainmentContent={defaultEntertainmentContent}
+        handleSubmit={async (entertainmentContent) => {
+            const tfile = await manager.createEntertainmentContent(entertainmentContent);
+            app.workspace.getLeaf(false).openFile(tfile);
+            onSubmit && onSubmit(entertainmentContent);
+        }} />
 }
