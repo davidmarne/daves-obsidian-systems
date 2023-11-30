@@ -4,6 +4,7 @@ import EatingManager from "../managers/eating_manager";
 import { Restaurant } from "../resource_access/restaurant/restaurant";
 import { CreateRestaurantForm } from "./internal/CreateRestaurantForm";
 import { App, Modal } from 'obsidian';
+import { getUrlStringFromClipboard } from 'src/common/url_util';
 
 export class CreateRestaurantModal extends Modal {
     manager: EatingManager;
@@ -36,4 +37,18 @@ export const renderForm = async (eatingManager: EatingManager, container: HTMLEl
                 close();
             }} />
     );
+}
+export const getRestaurantEditView = (eatingManager: EatingManager) => async (path?: string, onSubmit?: (inspiration: Restaurant) => void) => {
+    const cuisines = await eatingManager.readAllCuisines();
+    const defaultRestaurant = path !== undefined 
+        ? await eatingManager.readRestaurant(path) 
+        : null;
+
+    const defaultSource = await getUrlStringFromClipboard();
+    return <CreateRestaurantForm
+            cuisines={cuisines}
+            handleSubmit={async (restaurant) => {
+                await eatingManager.createRestaurant(restaurant);
+                close();
+            }} />;
 }

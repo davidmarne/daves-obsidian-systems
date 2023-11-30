@@ -1,7 +1,7 @@
 import { Exercise } from "../resource_access/exercise/exercise";
 import ExerciseResourceAccess from "../resource_access/exercise/exercise_resource_access";
 
-export default class EatingManager {
+export default class ExerciseManager {
     readonly exerciseContentResourceAccess: ExerciseResourceAccess;
 
     constructor(exerciseContentResourceAccess: ExerciseResourceAccess) {

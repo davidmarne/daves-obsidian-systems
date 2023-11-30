@@ -45,19 +45,27 @@ export default class EatingManager {
     }
     
     async readAllRecipes() {
-        return await this.recipeResourceAccess.readAll();
+        return this.recipeResourceAccess.readAll();
+    }
+
+    async readRecipe(path: string) {
+        return this.recipeResourceAccess.readResourceByPath(path);
     }
 
     async readAllIngredients() {
-        return await this.ingredientResourceAccess.readAll();
+        return this.ingredientResourceAccess.readAll();
     }
 
     async readAllCuisines() {
-        return await this.cuisineResourceAccess.readAll();
+        return this.cuisineResourceAccess.readAll();
     }
 
     async readAllRestaurants() {
-        return await this.restaurantResourceAccess.readAll();
+        return this.restaurantResourceAccess.readAll();
+    }
+
+    async readRestaurant(path: string) {
+        return this.restaurantResourceAccess.readResourceByPath(path);
     }
 
     async addToRecipeLog(recipe: Recipe) {

@@ -4,6 +4,7 @@ import { renderMuiInShadowDom } from "src/common/Shadow";
 import { CreateInspirationForm } from "./internal/CreateInspirationForm";
 import MusicManager from '../managers/music_manager';
 import { getUrlStringFromClipboard } from 'src/common/url_util';
+import { Inspiration } from '../resource_access/inspiration/inspiration';
 
 export class CreateInspirationModal extends Modal {
     manager: MusicManager;
@@ -39,4 +40,23 @@ const renderForm = async (app: App, musicManager: MusicManager, container: HTMLE
                 close();
             }} />
     );
+}
+
+export const getInspirationEditView = (musicManager: MusicManager) => async (path?: string, onSubmit?: (inspiration: Inspiration) => void) => {
+    const projects = await musicManager.readAllProjects();
+    const defaultInspiration = path !== undefined 
+        ? await musicManager.readInspiration(path) 
+        : undefined;
+        
+    const defaultSource = await getUrlStringFromClipboard();
+    return <CreateInspirationForm
+        defaultInspiration={defaultInspiration}
+        defaultSource={defaultSource}
+        projects={projects}
+        handleSubmit={async (inspiration) => {
+            const tfile = await musicManager.createInspiration(inspiration);
+            if (onSubmit) { 
+                onSubmit(inspiration);
+            }
+        }} />;
 }

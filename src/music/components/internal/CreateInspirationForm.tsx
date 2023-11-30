@@ -17,15 +17,18 @@ interface CreateInspirationState {
 }
 
 export const CreateInspirationForm = (props: {
+  defaultInspiration?: Inspiration,
   defaultSource?: string,
   projects: Project[],
   handleSubmit: (restaurant: Inspiration) => void,
 }) => {
   const [inspirationState, setInspirationState] = useStateWithPartialUpdater<CreateInspirationState>({
-    name: '',
-    selectedKind: InspirationKinds[0],
-    selectedProjects: [],
-    source: props.defaultSource || '',
+    name: props.defaultInspiration?.name || '',
+    selectedKind: props.defaultInspiration?.kind || InspirationKinds[0],
+    selectedProjects: props.defaultInspiration?.projects.map(it => it.name) || [],
+    source: props.defaultInspiration 
+      ? props.defaultInspiration?.source || ''
+      : props.defaultSource || '',
   });
 
   const handleSubmit = () => props.handleSubmit(

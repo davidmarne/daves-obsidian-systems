@@ -3,6 +3,7 @@ import * as React from 'react';
 import { renderMuiInShadowDom } from "src/common/Shadow";
 import EatingManager from "../managers/eating_manager";
 import { CreateRecipeForm } from "./internal/CreateRecipeForm";
+import { Recipe } from '../resource_access/recipe/recipe';
 
 export class CreateRecipeModal extends Modal {
     manager: EatingManager;
@@ -36,4 +37,19 @@ const renderForm = async (app: App, eatingManager: EatingManager, container: HTM
                 close();
             }} />
     );
+}
+
+export const getRecipeEditView = (eatingManager: EatingManager) => async (path?: string, onSubmit?: (recipe: Recipe) => void) => {
+    const ingredients = await eatingManager.readAllIngredients();
+    const defaultRecipe = path
+        ? await eatingManager.readRecipe(path) 
+        : undefined;
+
+    return <CreateRecipeForm
+        ingredients={ingredients.map(it => it.name)}
+        handleSubmit={async (recipe) => {
+            const tfile = await eatingManager.createRecipe(recipe);
+            app.workspace.getLeaf(false).openFile(tfile);
+            close();
+        }} />;
 }

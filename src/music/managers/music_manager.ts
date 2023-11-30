@@ -41,6 +41,18 @@ export default class MusicManager {
         return this.learningResourceResourceAccess.writeResource(newLearningResource);
     }
 
+    async readInspiration(path: string) {
+        return this.inspirationResourceAccess.readResourceByPath(path);
+    }
+
+    async readLearningResource(path: string) {
+        return this.learningResourceResourceAccess.readResourceByPath(path);
+    }
+
+    async readPracticeExercise(path: string) {
+        return this.practiceExerciseResourceAccess.readResourceByPath(path);
+    }
+
     async readAllInspirations() {
         return await this.inspirationResourceAccess.readAll();
     }
