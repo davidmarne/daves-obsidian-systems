@@ -1,10 +1,13 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { CreateResourceModal } from 'src/common/CreateResourceModal';
-import { EditResourceComponentFactories, getComponentFactoryForFilePath } from 'src/common/EditResourceComponentFactory';
+import { EditResourceComponentFactories, EditResourceComponentFactory, getComponentFactoryForFilePath } from 'src/common/EditResourceComponentFactory';
 import { EditResourceModal } from 'src/common/EditResourceModal';
 import { EDIT_RESOURCE_VIEW_TYPE_KEY, EditResourceView } from 'src/common/EditResourceView';
 import { getRecipeEditView } from 'src/eating/components/create_recipe';
 import { getRestaurantEditView } from 'src/eating/components/create_restaurant';
+import { WhatToMakeModal } from 'src/eating/components/what_to_make';
+import { WhereToEatModal } from 'src/eating/components/where_to_eat';
+import { WhatToDoModal as WhatToDoEntertainment } from 'src/entertainment/components/what_to_do'
 import EatingManager from 'src/eating/managers/eating_manager';
 import CuisineResourceAccess from 'src/eating/resource_access/cuisine/cuisine_resource_access';
 import IngredientResourceAccess from 'src/eating/resource_access/ingredient/ingredient_resource_access';
@@ -16,6 +19,7 @@ import EntertainmentContentResourceAccess, { entertainmentContentsPath } from 's
 import { getInspirationEditView } from 'src/music/components/create_inspiration';
 import { getLearningResourceEditView } from 'src/music/components/create_learning_resource';
 import { getPracticeExerciseEditView } from 'src/music/components/create_practice_exercise';
+import { WhatToDoModal } from 'src/music/components/what_to_do';
 import MusicManager from 'src/music/managers/music_manager';
 import InspirationResourceAccess, { inspirationsPath } from 'src/music/resource_access/inspiration/inspiration_resource_access';
 import LearningResourceResourceAccess, { learningResourcesPath } from 'src/music/resource_access/learning_resource/learning_resource_resource_access';
@@ -68,12 +72,18 @@ export default class DavesObsidianSystems extends Plugin {
 			entertainmentContentResourceAccess);
 
 		const components: EditResourceComponentFactories = {}
-		components[restaurantPath] = getRestaurantEditView(this.app, eatingManager);
-		components[recipesPath] = getRecipeEditView(this.app, eatingManager);
-		components[inspirationsPath] = getInspirationEditView(this.app, musicManager);
-		components[practiceExercisesPath] = getPracticeExerciseEditView(this.app, musicManager);
-		components[learningResourcesPath] = getLearningResourceEditView(this.app, musicManager);
-		components[entertainmentContentsPath] = getEntertainmentContentEditView(this.app, entertainmentManager);
+		const registerComponent = (path: string, factory: EditResourceComponentFactory) => {
+			const key = path.endsWith("/")
+				? path.substring(0, path.length - 1)
+				: path;
+			components[key] = factory
+		}
+		registerComponent(restaurantPath, getRestaurantEditView(this.app, eatingManager));
+		registerComponent(recipesPath, getRecipeEditView(this.app, eatingManager));
+		registerComponent(inspirationsPath, getInspirationEditView(this.app, musicManager));
+		registerComponent(practiceExercisesPath, getPracticeExerciseEditView(this.app, musicManager));
+		registerComponent(learningResourcesPath, getLearningResourceEditView(this.app, musicManager));
+		registerComponent(entertainmentContentsPath, getEntertainmentContentEditView(this.app, entertainmentManager));
 
 		this.registerView(EDIT_RESOURCE_VIEW_TYPE_KEY, (leaf) => {
 			this.editResourceView = new EditResourceView(leaf, this, components)
