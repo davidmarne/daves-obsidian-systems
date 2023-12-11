@@ -1,6 +1,8 @@
 
+import { Node, Root } from 'mdast';
 import { Note } from '../../../common/note';
 import { entertainmentContentsPath } from './entertainment_content_resource_access';
+import { MarkdownString } from 'src/common/ast';
 
 export const EntertainmentContentKinds = ["tv", "movie", "video_game", "playlist", "album", "music_video", "song", "concert", "board_game", "live_sporting_event"] as const;
 export type EntertainmentContentKind = typeof EntertainmentContentKinds[number];
@@ -11,17 +13,20 @@ export type EntertainmentContentState = typeof EntertainmentContentStates[number
 export const EntertainmentContentAnticipations = ["none", "low", "medium", "high"] as const;
 export type EntertainmentContentAnticipation = typeof EntertainmentContentAnticipations[number];
 
+
 export class EntertainmentContent extends Note {
     readonly kind: EntertainmentContentKind;
     readonly state: EntertainmentContentState;
     readonly anticipation: EntertainmentContentAnticipation;
-    readonly rating?: number;
+    readonly rating: number;
+    readonly description: MarkdownString;
 
-    constructor(name: string, kind: EntertainmentContentKind, state: EntertainmentContentState, anticipation: EntertainmentContentAnticipation, rating?: number) {
+    constructor(name: string, kind: EntertainmentContentKind, state: EntertainmentContentState, anticipation: EntertainmentContentAnticipation, rating: number, description: MarkdownString) {
         super(name, entertainmentContentsPath);
         this.kind = kind;
         this.state = state;
         this.anticipation = anticipation;
         this.rating = rating;
+        this.description = description;
     }
 }

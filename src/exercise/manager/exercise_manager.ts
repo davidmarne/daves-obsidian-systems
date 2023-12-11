@@ -12,7 +12,7 @@ export default class ExerciseManager {
         await this.exerciseContentResourceAccess.writeResource(newEntertainmentContent);
     }
 
-    async readAllEntertainmentContent() {
-        return await this.exerciseContentResourceAccess.readAll();
+    async listEntertainmentContent() {
+        return await this.exerciseContentResourceAccess.list();
     }
 }

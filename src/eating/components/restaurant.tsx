@@ -5,7 +5,7 @@ import { CreateRestaurantForm } from "./internal/CreateRestaurantForm";
 import { App, Modal } from 'obsidian';
 
 export const getRestaurantEditView = (app: App, eatingManager: EatingManager) => async (path?: string, onSubmit?: (inspiration: Restaurant) => void) => {
-    const cuisines = await eatingManager.readAllCuisines();
+    const cuisines = await eatingManager.listCuisines();
     const defaultRestaurant = path !== undefined 
         ? await eatingManager.readRestaurant(path) 
         : undefined;

@@ -13,8 +13,8 @@ export default class EntertainmentManager {
        return await this.entertainmentContentResourceAccess.writeResource(newEntertainmentContent);
     }
 
-    async readAllEntertainmentContent() {
-        return await this.entertainmentContentResourceAccess.readAll();
+    async listEntertainmentContent() {
+        return await this.entertainmentContentResourceAccess.list();
     }
 
     async readEntertainmentContent(path: string) {

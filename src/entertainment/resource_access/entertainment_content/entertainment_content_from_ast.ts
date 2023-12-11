@@ -1,6 +1,7 @@
 import { AssertionError } from 'assert';
 import { Root } from 'mdast';
 import { parseYaml } from 'obsidian';
+import { newMarkdownString } from 'src/common/ast';
 import { EntertainmentContent } from 'src/entertainment/resource_access/entertainment_content/entertainment_content';
 
 
@@ -9,11 +10,14 @@ export const entertainmentContentFromAst = (name: string, ast: Root): Entertainm
     if (frontmatter.type !== 'yaml') throw new AssertionError({message: "invalid ast", actual: frontmatter.type})
     const frontmatterData = parseYaml(frontmatter.value)
 
+    const mdNodes = ast.children.slice(1)
+
     return new EntertainmentContent(
         name,
         frontmatterData["kind"],
         frontmatterData["state"],
         frontmatterData["anticipation"],
         frontmatterData["rating"],
+        newMarkdownString(mdNodes)
     )
 }

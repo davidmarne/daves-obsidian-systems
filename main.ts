@@ -3,8 +3,8 @@ import { CreateResourceModal } from 'src/common/CreateResourceModal';
 import { EditResourceComponentFactories, EditResourceComponentFactory, getComponentFactoryForFilePath } from 'src/common/EditResourceComponentFactory';
 import { EditResourceModal } from 'src/common/EditResourceModal';
 import { EDIT_RESOURCE_VIEW_TYPE_KEY, EditResourceView } from 'src/common/EditResourceView';
-import { getRecipeEditView } from 'src/eating/components/create_recipe';
-import { getRestaurantEditView } from 'src/eating/components/create_restaurant';
+import { getRecipeEditView } from 'src/eating/components/recipe';
+import { getRestaurantEditView } from 'src/eating/components/restaurant';
 import { WhatToMakeModal } from 'src/eating/components/what_to_make';
 import { WhereToEatModal } from 'src/eating/components/where_to_eat';
 import { WhatToDoModal as WhatToDoEntertainment } from 'src/entertainment/components/what_to_do'
@@ -78,6 +78,7 @@ export default class DavesObsidianSystems extends Plugin {
 				: path;
 			components[key] = factory
 		}
+
 		registerComponent(restaurantPath, getRestaurantEditView(this.app, eatingManager));
 		registerComponent(recipesPath, getRecipeEditView(this.app, eatingManager));
 		registerComponent(inspirationsPath, getInspirationEditView(this.app, musicManager));

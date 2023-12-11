@@ -11,11 +11,13 @@ export class Inspiration extends Note {
     readonly kind: InspirationKind;
     readonly projects: Project[];
     readonly source?: string;
+    readonly description: string;
 
-    constructor(name: string, kind: InspirationKind, projects: Project[], source?: string) {
+    constructor(name: string, kind: InspirationKind, projects: Project[], source: string, description: string) {
         super(name, inspirationsPath);
         this.kind = kind;
         this.projects = projects;
         this.source = source;
+        this.description = description;
     }
 }

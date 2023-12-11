@@ -1,7 +1,7 @@
 import { Root, TableRow } from 'mdast';
 import { parseYaml } from 'obsidian';
 import { AssertionError } from 'assert';
-import { IngredientUnit, IngredientUsage, Recipe, RecipeLog } from './recipe';
+import { IngredientUsage, Recipe, RecipeLog } from './recipe';
 import { Ingredient } from '../ingredient/ingredient';
 import moment from 'moment';
 import { parseWikiLink } from 'src/common/wiki_link_utils';
@@ -46,7 +46,7 @@ const ingredientUsageFromTableRow = (tableRow: TableRow): IngredientUsage => {
 
     return {
         amount: Number(usageParts[0]),
-        unit: usageParts[1] as IngredientUnit,
+        unit: usageParts[1],
         ingredient: new Ingredient(ingredientName)
     }
 }

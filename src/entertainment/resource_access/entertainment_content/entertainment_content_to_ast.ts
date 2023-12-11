@@ -1,30 +1,37 @@
-import { Root, Yaml } from 'mdast';
+import { Root, RootContent, Yaml } from 'mdast';
 import { stringifyYaml } from 'obsidian';
 import { EntertainmentContent } from './entertainment_content';
+import { getMDASTForString } from 'src/common/ast';
 
 
-export const entertainmentContentToAst = (entertainment_content: EntertainmentContent): Root => {
+export const entertainmentContentToAst = (entertainmentContent: EntertainmentContent): Root => {
     return {
         type: "root",
         children: [
-            frontMatter(entertainment_content),
+            frontMatter(entertainmentContent),
+            ...markdownChildren(entertainmentContent)
         ]
     }
 }
 
-const frontMatter = (entertainment_content: EntertainmentContent): Yaml => {
+const frontMatter = (entertainmentContent: EntertainmentContent): Yaml => {
     return {
         type: "yaml",
-        value: stringifyYaml(frontMatterData(entertainment_content))
+        value: stringifyYaml(frontMatterData(entertainmentContent))
     }
 }
 
-const frontMatterData = (entertainment_content: EntertainmentContent): object => {
+const frontMatterData = (entertainmentContent: EntertainmentContent): object => {
     return {
         $schema: `entertainment_content.schema.json`,
-        kind: entertainment_content.kind,
-        state: entertainment_content.state,
-        anticipation: entertainment_content.anticipation,
-        rating: entertainment_content.rating,
+        kind: entertainmentContent.kind,
+        state: entertainmentContent.state,
+        anticipation: entertainmentContent.anticipation,
+        rating: entertainmentContent.rating,
     }
+}
+
+const markdownChildren = (entertainmentContent: EntertainmentContent): RootContent[] => {
+    const ast = getMDASTForString(entertainmentContent.description);
+    return ast.children;
 }

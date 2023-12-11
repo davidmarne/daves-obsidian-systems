@@ -18,6 +18,8 @@ export class EditResourceView extends View {
 		this.components = components;
 		this.registerEvent(plugin.app.workspace.on('active-leaf-change', (leaf: WorkspaceLeaf | null) => this.onFileChange()));
 		this.registerEvent(plugin.app.workspace.on('editor-change', (editor: Editor, info: MarkdownView | MarkdownFileInfo) => this.onFileChange()));
+		this.registerEvent(plugin.app.vault.on("modify", (file) => this.onFileChange()));
+		this.registerEvent(plugin.app.vault.on("rename", (file) => this.onFileChange()));
 	}
 
 	getViewType() {
@@ -41,8 +43,10 @@ export class EditResourceView extends View {
 	}
 
 	async render() {
+		console.log("DAVE EditResourceView render ", this.rerender)
 		const renderFn = this.rerender || ((child) => {
 			this.rerender = renderMuiInShadowDom(this.containerEl, child);
+			console.log("DAVE EditResourceView rerender set ", this.rerender)
 		});
 		const tfile = this.app.workspace.getActiveFile();
 		if (tfile === null) {

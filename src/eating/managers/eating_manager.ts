@@ -44,24 +44,24 @@ export default class EatingManager {
         return tfile;
     }
     
-    async readAllRecipes() {
-        return this.recipeResourceAccess.readAll();
+    async listRecipes() {
+        return this.recipeResourceAccess.list();
     }
 
     async readRecipe(path: string) {
         return this.recipeResourceAccess.readResourceByPath(path);
     }
 
-    async readAllIngredients() {
-        return this.ingredientResourceAccess.readAll();
+    async listIngredients() {
+        return this.ingredientResourceAccess.list();
     }
 
-    async readAllCuisines() {
-        return this.cuisineResourceAccess.readAll();
+    async listCuisines() {
+        return this.cuisineResourceAccess.list();
     }
 
-    async readAllRestaurants() {
-        return this.restaurantResourceAccess.readAll();
+    async listRestaurants() {
+        return this.restaurantResourceAccess.list();
     }
 
     async readRestaurant(path: string) {

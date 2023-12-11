@@ -1,11 +1,11 @@
 import { App } from 'obsidian';
 import * as React from 'react';
 import EatingManager from "../managers/eating_manager";
-import { CreateRecipeForm } from "./internal/CreateRecipeForm";
+import { CreateRecipeForm } from "./internal/recipe/CreateRecipeForm";
 import { Recipe } from '../resource_access/recipe/recipe';
 
 export const getRecipeEditView = (app: App, eatingManager: EatingManager) => async (path?: string, onSubmit?: (recipe: Recipe) => void) => {
-    const ingredients = await eatingManager.readAllIngredients();
+    const ingredients = await eatingManager.listIngredients();
     const defaultRecipe = path
         ? await eatingManager.readRecipe(path) 
         : undefined;

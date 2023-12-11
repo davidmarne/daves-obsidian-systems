@@ -14,8 +14,7 @@ export interface IngredientUsage {
     unit: string,
 }
 
-export type IngredientUnit = 'cup' | 'oz' | 'teaspoon' | 'tablespoon' | 'gram';
-export const IngredientUnits: IngredientUnit[] = ['cup', 'oz', 'teaspoon', 'tablespoon', 'gram'];
+export const IngredientUnits: string[] = ['', 'cup', 'oz', 'teaspoon', 'tablespoon', 'gram'];
 
 export interface RecipeLog {
     date: Moment,
@@ -26,11 +25,11 @@ export interface RecipeLog {
 export class Recipe extends Note {
     readonly kind: RecipeKind;
     readonly ingredientUsages: IngredientUsage[];
-    readonly source: URL;
+    readonly source: string;
     readonly description: string;
     readonly log: RecipeLog[];
     
-    constructor(name: string, kind: RecipeKind, ingredientUsages: IngredientUsage[], url: URL, description: string, log: RecipeLog[]) {
+    constructor(name: string, kind: RecipeKind, ingredientUsages: IngredientUsage[], url: string, description: string, log: RecipeLog[]) {
         super(name, recipesPath);
         this.kind = kind;
         this.ingredientUsages = ingredientUsages;

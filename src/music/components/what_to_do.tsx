@@ -25,9 +25,9 @@ export class WhatToDoModal extends Modal {
 }
 
 const renderForm = async (app: App, musicManager: MusicManager, container: HTMLElement, close: () => void) => {
-    const inpsirations = await musicManager.readAllInspirations();
-    const practiceExercises = await musicManager.readAllPracticeExercises();
-    const learningResources = await musicManager.readAllLearningResources();
+    const inpsirations = await musicManager.listInspirations();
+    const practiceExercises = await musicManager.listPracticeExercises();
+    const learningResources = await musicManager.listLearningResources();
     renderMuiInShadowDom(
         container,
         <WhatToDoForm

@@ -14,6 +14,7 @@ interface CreateInspirationState {
   source: string,
   selectedProjects: string[],
   projectAutoCompleteInput?: string,
+  description: string,
 }
 
 export const CreateInspirationForm = (props: {
@@ -29,6 +30,7 @@ export const CreateInspirationForm = (props: {
     source: props.defaultInspiration 
       ? props.defaultInspiration?.source || ''
       : props.defaultSource || '',
+    description: props.defaultInspiration?.description || ''
   });
 
   const handleSubmit = () => props.handleSubmit(
@@ -36,7 +38,8 @@ export const CreateInspirationForm = (props: {
         inspirationState.name,
         inspirationState.selectedKind!,
         inspirationState.selectedProjects.map(it => new Project(it)),
-        inspirationState.source
+        inspirationState.source,
+        inspirationState.description,
       ));
 
   const handleInspirationNameChange = (event: ChangeEvent<HTMLInputElement>) => setInspirationState({
@@ -60,6 +63,11 @@ export const CreateInspirationForm = (props: {
     selectedProjects: selected
   });
 
+  const handleDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => setInspirationState({
+    description: event.target.value
+  });
+
+
   let projectNames = props.projects.map(it => it.name);
   if (inspirationState.projectAutoCompleteInput) {
     projectNames = [inspirationState.projectAutoCompleteInput, ...projectNames]
@@ -67,7 +75,7 @@ export const CreateInspirationForm = (props: {
   if (inspirationState.selectedProjects) {
     projectNames = [...new Set([...projectNames, ...inspirationState.selectedProjects])];
   }
-
+  
   return <Box sx={{ width: '100%' }}>
     <Container>
       <Box
@@ -115,6 +123,15 @@ export const CreateInspirationForm = (props: {
               label="Project Name"
               placeholder="Project Name" />
           )} />
+        <TextField
+          required
+          fullWidth
+          multiline
+          value={inspirationState.description}
+          onChange={handleDescriptionChange}
+          sx={{ mt: 1 }}
+          label="Description"
+          name="description" />
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
         <Box sx={{ flex: '1 1 auto' }} />

@@ -7,7 +7,7 @@ import { getUrlStringFromClipboard } from 'src/common/url_util';
 import { Inspiration } from '../resource_access/inspiration/inspiration';
 
 export const getInspirationEditView = (app: App, musicManager: MusicManager) => async (path?: string, onSubmit?: (inspiration: Inspiration) => void) => {
-    const projects = await musicManager.readAllProjects();
+    const projects = await musicManager.listProjects();
     const defaultInspiration = path !== undefined 
         ? await musicManager.readInspiration(path) 
         : undefined;

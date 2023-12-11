@@ -4,7 +4,7 @@ import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkFrontmatter from 'remark-frontmatter';
 import {unified} from 'unified';
-import { Root } from 'mdast';
+import { Root, RootContent } from 'mdast';
 import remarkStringify from 'remark-stringify'
 
 const compiler = unified()
@@ -28,6 +28,11 @@ export const getMarkdownContentFromAST = (ast: Root) => {
     return strContent;
 }
 
+
+export const getMDASTForString = (data: string): Root => {
+    return compiler.parse(data);
+}
+
 export const getMDAST = async (vault: Vault, file: TFile): Promise<Root> => {
     const data = await vault.read(file);
     return compiler.parse(data);
@@ -41,4 +46,13 @@ export const getPropertiesFromAst = (ast: Root) => {
     }
     
     return null;
+}
+
+export type MarkdownString = string;
+
+export const newMarkdownString = (astNodes: RootContent[]) => {
+    return getMarkdownContentFromAST({
+        type: 'root',
+        children: astNodes
+    })
 }

@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import * as React from 'react';
 import { ChangeEvent } from 'react';
+import { MarkdownString } from 'src/common/ast';
 import { useStateWithPartialUpdater } from 'src/common/react_util';
 import { EntertainmentContentKind, EntertainmentContent, EntertainmentContentKinds, EntertainmentContentState, EntertainmentContentStates, EntertainmentContentAnticipation, EntertainmentContentAnticipations } from 'src/entertainment/resource_access/entertainment_content/entertainment_content';
 
@@ -13,6 +14,7 @@ interface CreateEntertainmentContentState {
   selectedAnticipation: EntertainmentContentAnticipation,
   selectedState: EntertainmentContentState,
   rating: number,
+  description: string,
 }
 
 export const CreateEntertainmentContentForm = (props: {
@@ -25,6 +27,7 @@ export const CreateEntertainmentContentForm = (props: {
     selectedKind: props.defaultEntertainmentContent?.kind || EntertainmentContentKinds[0],
     selectedState: props.defaultEntertainmentContent?.state || EntertainmentContentStates[0],
     rating: props.defaultEntertainmentContent?.rating || 0,
+    description: props.defaultEntertainmentContent?.description || '',
   });
 
   const handleSubmit = () => props.handleSubmit(
@@ -34,8 +37,9 @@ export const CreateEntertainmentContentForm = (props: {
         entertainementContentState.selectedState,
         entertainementContentState.selectedAnticipation,
         entertainementContentState.rating,
+        entertainementContentState.description,
       ));
-
+      
   const handleEntertainmentContentNameChange = (event: ChangeEvent<HTMLInputElement>) => setEntertainmentContentState({
     name: event.target.value
   });
@@ -53,6 +57,13 @@ export const CreateEntertainmentContentForm = (props: {
     selectedState: event.target.value as EntertainmentContentState
   });
 
+  const handleEntertainmentContentRatingChange = (event: ChangeEvent<HTMLInputElement>) => setEntertainmentContentState({
+    rating: +event.target.value
+  });
+
+  const handleEntertainmentContentDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => setEntertainmentContentState({
+    description: event.target.value
+  });
 
   return <Box sx={{ width: '100%' }}>
     <Container>
@@ -92,6 +103,24 @@ export const CreateEntertainmentContentForm = (props: {
           onChange={handleEntertainmentContentAnticipationChanged}>
           {EntertainmentContentAnticipations.map(anticipation => <MenuItem key={anticipation} value={anticipation}>{anticipation}</MenuItem>)}
         </Select>
+        <TextField
+          required
+          fullWidth
+          type='number'
+          value={entertainementContentState.rating}
+          onChange={handleEntertainmentContentRatingChange}
+          sx={{ mt: 1 }}
+          label="EntertainmentContent Rating"
+          name="name" />
+          <TextField
+          required
+          fullWidth
+          multiline
+          value={entertainementContentState.description}
+          onChange={handleEntertainmentContentDescriptionChange}
+          sx={{ mt: 1 }}
+          label="EntertainmentContent Description"
+          name="description" />
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
         <Box sx={{ flex: '1 1 auto' }} />

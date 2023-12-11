@@ -25,7 +25,7 @@ export class WhatToDoModal extends Modal {
 }
 
 const renderForm = async (app: App, entertainmentManager: EntertainmentManager, container: HTMLElement, close: () => void) => {
-    const entertainmentContents = await entertainmentManager.readAllEntertainmentContent();
+    const entertainmentContents = await entertainmentManager.listEntertainmentContent();
     renderMuiInShadowDom(
         container,
         <WhatToDoForm

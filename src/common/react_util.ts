@@ -9,5 +9,5 @@ export const useStateWithPartialUpdater = <T>(defaultState: T): [T, PartialUpdat
 }
 
 export const withPartial = <T>(previousState: T, update: Partial<T>): T => {
-    return Object.assign<Partial<T>, T, Partial<T>>({}, previousState, update);
+    return Object.assign<Partial<T>, T, Partial<T>>(Object.create(Object.getPrototypeOf(previousState)), previousState, update);
 }

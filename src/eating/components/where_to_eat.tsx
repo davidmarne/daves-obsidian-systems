@@ -25,8 +25,8 @@ export class WhereToEatModal extends Modal {
 }
 
 const renderForm = async (eatingManager: EatingManager, container: HTMLElement, close: () => void) => {
-    const cuisines = await eatingManager.readAllCuisines();
-    const restaurants = await eatingManager.readAllRestaurants();
+    const cuisines = await eatingManager.listCuisines();
+    const restaurants = await eatingManager.listRestaurants();
     renderMuiInShadowDom(
         container,
         <WhereToEatForm
