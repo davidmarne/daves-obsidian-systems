@@ -5,7 +5,7 @@ import ResourceAccess from "src/common/resource_access";
 import { App } from "obsidian";
 import { Goal } from "./goal";
 import { Root } from "mdast";
-import { projectFromAst2, projectToAst, projectToAst2 } from "./project/project_to_ast";
+import { projectFromAst2, projectToAst2 } from "./project/project_to_ast";
 
 export type Task = string
 

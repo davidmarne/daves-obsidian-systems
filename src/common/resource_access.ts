@@ -120,8 +120,6 @@ abstract class IResourceAccess<T extends Note> {
     abstract exists(name: string): boolean;
     abstract write(note: T): Promise<void>;
     abstract delete(name: string): Promise<void>;
-    // TODO: this should prob be on manager?
-    abstract onChange(callback: (event: ResourceAccessEvent<T>) => void): () => void;
 }
 
 class CachingResourceAccess<T extends Note> extends IResourceAccess<T> {

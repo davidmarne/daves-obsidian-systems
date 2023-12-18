@@ -1,5 +1,5 @@
 import { Heading, List, Node, Paragraph, Root, Yaml } from 'mdast';
-import { parseYaml, stringifyYaml } from 'obsidian';]
+import { parseYaml, stringifyYaml } from 'obsidian';
 import { AssertionError } from 'assert';
 import { withPartial } from 'src/common/react_util';
 import { parseWikiLink } from 'src/common/wiki_link_utils';
