@@ -1,7 +1,7 @@
 import * as React from 'react';
 import EatingManager from "../managers/eating_manager";
 import { Restaurant } from "../resource_access/restaurant/restaurant";
-import { CreateRestaurantForm } from "./internal/CreateRestaurantForm";
+import { CreateRestaurantForm, EditRestaurant } from "./internal/restaurant/CreateRestaurantForm";
 import { App, Modal } from 'obsidian';
 
 export const getRestaurantEditView = (app: App, eatingManager: EatingManager) => async (path?: string, onSubmit?: (inspiration: Restaurant) => void) => {
@@ -10,8 +10,8 @@ export const getRestaurantEditView = (app: App, eatingManager: EatingManager) =>
         ? await eatingManager.readRestaurant(path) 
         : undefined;
 
-    return <CreateRestaurantForm
-            defaultRestaurant={defaultRestaurant}
+    return <EditRestaurant
+            restaurant={defaultRestaurant}
             cuisines={cuisines}
             handleSubmit={async (restaurant) => {
                 const tfile = await eatingManager.createRestaurant(restaurant);

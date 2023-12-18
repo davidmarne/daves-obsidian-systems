@@ -1,9 +1,9 @@
 import { Root, Yaml } from 'mdast';
 import { stringifyYaml } from 'obsidian';
-import { Project } from './project';
+import { MusicProject } from './project';
 
 
-export const projectToAst = (project: Project): Root => {
+export const projectToAst = (project: MusicProject): Root => {
     return {
         type: "root",
         children: [
@@ -12,14 +12,14 @@ export const projectToAst = (project: Project): Root => {
     }
 }
 
-const frontMatter = (project: Project): Yaml => {
+const frontMatter = (project: MusicProject): Yaml => {
     return {
         type: "yaml",
         value: stringifyYaml(frontMatterData(project))
     }
 }
 
-const frontMatterData = (project: Project): object => {
+const frontMatterData = (project: MusicProject): object => {
     return {
         $schema: `project.schema.json`,
     }

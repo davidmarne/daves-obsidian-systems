@@ -3,7 +3,7 @@ import { Root } from 'mdast';
 import { parseYaml } from 'obsidian';
 import { parseWikiLink } from 'src/common/wiki_link_utils';
 import { Inspiration } from 'src/music/resource_access/inspiration/inspiration';
-import { Project } from '../project/project';
+import { MusicProject } from '../project/project';
 import { newMarkdownString } from 'src/common/ast';
 
 
@@ -17,7 +17,7 @@ export const inspirationFromAst = (name: string, ast: Root): Inspiration => {
     return new Inspiration(
         name, 
         frontmatterData["kind"], 
-        frontmatterData['projects'].map(parseWikiLink).map((it: string) => new Project(it)),
+        frontmatterData['projects'].map(parseWikiLink).map((it: string) => new MusicProject(it)),
         frontmatterData["source"],
         newMarkdownString(mdNodes)
     )

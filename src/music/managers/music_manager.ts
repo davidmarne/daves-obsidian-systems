@@ -4,7 +4,7 @@ import InspirationResourceAccess from "../resource_access/inspiration/inspiratio
 import LearningResourceResourceAccess from "../resource_access/learning_resource/learning_resource_resource_access";
 import LyricResourceAccess from "../resource_access/lyric/lyric_resource_access";
 import PracticeExerciseResourceAccess from "../resource_access/practice_exercise/practice_exercise_resource_access";
-import ProjectResourceAccess from "../resource_access/project/project_resource_access";
+import MusicProjectResourceAccess from "../resource_access/project/project_resource_access";
 import { PracticeExercise } from "../resource_access/practice_exercise/practice_exercise";
 import { LearningResource } from "../resource_access/learning_resource/learning_resource";
 
@@ -14,13 +14,13 @@ export default class MusicManager {
     private readonly learningResourceResourceAccess: LearningResourceResourceAccess;
     private readonly lyricResourceAccess: LyricResourceAccess;
     private readonly practiceExerciseResourceAccess: PracticeExerciseResourceAccess;
-    private readonly projectResourceAccess: ProjectResourceAccess;
+    private readonly projectResourceAccess: MusicProjectResourceAccess;
 
     constructor(inspirationResourceAccess: InspirationResourceAccess,
         learningResourceResourceAccess: LearningResourceResourceAccess,
         lyricResourceAccess: LyricResourceAccess,
         practiceExerciseResourceAccess: PracticeExerciseResourceAccess,
-        projectResourceAccess: ProjectResourceAccess) {
+        projectResourceAccess: MusicProjectResourceAccess) {
 
         this.inspirationResourceAccess = inspirationResourceAccess;
         this.learningResourceResourceAccess = learningResourceResourceAccess;

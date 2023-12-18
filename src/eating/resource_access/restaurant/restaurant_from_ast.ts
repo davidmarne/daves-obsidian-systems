@@ -26,7 +26,7 @@ export const restaurantFromAst = (name: string, ast: Root): Restaurant => {
         name,
         frontmatterData['distance'],
         frontmatterData['price'],
-        frontmatterData['cuisine'].map(parseWikiLink).map((it: string) => new Cuisine(it)),
+        frontmatterData['cuisine'].map(parseWikiLink),
         description,
         log
     )

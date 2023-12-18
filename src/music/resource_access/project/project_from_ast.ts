@@ -1,7 +1,7 @@
 import { Root } from 'mdast';
-import { Project } from 'src/music/resource_access/project/project';
+import { MusicProject } from 'src/music/resource_access/project/project';
 
 
-export const projectFromAst = (name: string, ast: Root): Project => {
-    return new Project(name)
+export const projectFromAst = (name: string, ast: Root): MusicProject => {
+    return new MusicProject(name)
 }

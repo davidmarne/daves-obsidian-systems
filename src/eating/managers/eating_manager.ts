@@ -5,6 +5,7 @@ import { Restaurant } from "../resource_access/restaurant/restaurant";
 import RestaurantResourceAccess from "../resource_access/restaurant/restaurant_resource_access";
 import CuisineResourceAccess from "../resource_access/cuisine/cuisine_resource_access";
 import { TFile } from "obsidian";
+import { Cuisine } from "../resource_access/cuisine/cuisine";
 
 export default class EatingManager {
     readonly ingredientResourceAccess: IngredientResourceAccess;
@@ -37,8 +38,8 @@ export default class EatingManager {
     async createRestaurant(newRestaurant: Restaurant): Promise<TFile> {
         const tfile = await this.restaurantResourceAccess.writeResource(newRestaurant);
         for (const cuisine of newRestaurant.cuisines) {
-            if (!this.cuisineResourceAccess.exists(cuisine.name)) {
-                await this.cuisineResourceAccess.writeResource(cuisine);
+            if (!this.cuisineResourceAccess.exists(cuisine)) {
+                await this.cuisineResourceAccess.writeResource(new Cuisine(cuisine));
             }
         }
         return tfile;

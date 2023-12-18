@@ -1,7 +1,7 @@
 
 import { App } from 'obsidian';
 import { Note } from '../../../common/note';
-import { Project } from '../project/project';
+import { MusicProject } from '../project/project';
 import { lyricsPath } from './lyric_resource_access';
 
 type LyricKind = "hook" | "verse" | "concept" | "bar";

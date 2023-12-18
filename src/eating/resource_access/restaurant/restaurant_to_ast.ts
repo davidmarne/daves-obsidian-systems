@@ -1,6 +1,7 @@
 import { Heading, Paragraph, Root, Table, TableRow, Yaml } from 'mdast';
 import { stringifyYaml } from 'obsidian';
 import { Restaurant, RestaurantLog } from './restaurant';
+import { Cuisine } from '../cuisine/cuisine';
 
 
 export const restaurantToAst = (restaurant: Restaurant): Root => {
@@ -28,7 +29,7 @@ const frontMatterData = (restaurant: Restaurant): object => {
         $schema: `restaurant.schema.json`,
         distance: restaurant.distance,
         price: restaurant.price,
-        cuisine: restaurant.cuisines.map(it => it.link()),
+        cuisine: restaurant.cuisines.map(it => new Cuisine(it).link()),
     }
 }
 

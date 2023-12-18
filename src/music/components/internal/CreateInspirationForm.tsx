@@ -5,7 +5,7 @@ import * as React from 'react';
 import { ChangeEvent } from 'react';
 import { useStateWithPartialUpdater } from 'src/common/react_util';
 import { Inspiration, InspirationKind, InspirationKinds } from 'src/music/resource_access/inspiration/inspiration';
-import { Project } from 'src/music/resource_access/project/project';
+import { MusicProject } from 'src/music/resource_access/project/project';
 
 
 interface CreateInspirationState {
@@ -20,7 +20,7 @@ interface CreateInspirationState {
 export const CreateInspirationForm = (props: {
   defaultInspiration?: Inspiration,
   defaultSource?: string,
-  projects: Project[],
+  projects: MusicProject[],
   handleSubmit: (restaurant: Inspiration) => void,
 }) => {
   const [inspirationState, setInspirationState] = useStateWithPartialUpdater<CreateInspirationState>({
@@ -37,7 +37,7 @@ export const CreateInspirationForm = (props: {
       new Inspiration(
         inspirationState.name,
         inspirationState.selectedKind!,
-        inspirationState.selectedProjects.map(it => new Project(it)),
+        inspirationState.selectedProjects.map(it => new MusicProject(it)),
         inspirationState.source,
         inspirationState.description,
       ));

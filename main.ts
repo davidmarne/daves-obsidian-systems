@@ -25,7 +25,13 @@ import InspirationResourceAccess, { inspirationsPath } from 'src/music/resource_
 import LearningResourceResourceAccess, { learningResourcesPath } from 'src/music/resource_access/learning_resource/learning_resource_resource_access';
 import LyricResourceAccess from 'src/music/resource_access/lyric/lyric_resource_access';
 import PracticeExerciseResourceAccess, { practiceExercisesPath } from 'src/music/resource_access/practice_exercise/practice_exercise_resource_access';
-import ProjectResourceAccess from 'src/music/resource_access/project/project_resource_access';
+import MusicProjectResourceAccess from 'src/music/resource_access/project/project_resource_access';
+import { ProjectResourceAccess, projectPath } from 'src/gtd/resource_access/project';
+import { getProjectEditView } from 'src/gtd/components/project';
+import GtdManager from 'src/gtd/manager/gtd_manager';
+import { GoalResourceAccess } from 'src/gtd/resource_access/goal';
+import { ValueResourceAccess } from 'src/gtd/resource_access/value';
+import { InboxResourceAccess } from 'src/gtd/resource_access/inbox';
 
 // Remember to rename these classes and interfaces!
 
@@ -59,17 +65,29 @@ export default class DavesObsidianSystems extends Plugin {
         const learningResourceAccess = new LearningResourceResourceAccess(this.app);
         const lyricResourceAccess = new LyricResourceAccess(this.app);
         const practiceResourceAccess = new PracticeExerciseResourceAccess(this.app);
-        const projectResourceAccess = new ProjectResourceAccess(this.app);
+        const musicProjectResourceAccess = new MusicProjectResourceAccess(this.app);
 		const musicManager = new MusicManager(
 			inspirationResourceAccess, 
 			learningResourceAccess, 
 			lyricResourceAccess,
 			practiceResourceAccess,
-			projectResourceAccess);
+			musicProjectResourceAccess);
 
 		const entertainmentContentResourceAccess = new EntertainmentContentResourceAccess(this.app);
 		const entertainmentManager = new EntertainmentManager(
 			entertainmentContentResourceAccess);
+
+
+
+		const projectResourceAccess = new ProjectResourceAccess(this.app);
+		const goalResourceAccess = new GoalResourceAccess(this.app);
+		const valueResourceAccess = new ValueResourceAccess(this.app);
+		const inboxResourceAccess = new InboxResourceAccess(this.app);
+		const gtdManager = new GtdManager(
+			projectResourceAccess,
+			goalResourceAccess,
+			valueResourceAccess,
+			inboxResourceAccess);
 
 		const components: EditResourceComponentFactories = {}
 		const registerComponent = (path: string, factory: EditResourceComponentFactory) => {
@@ -85,6 +103,7 @@ export default class DavesObsidianSystems extends Plugin {
 		registerComponent(practiceExercisesPath, getPracticeExerciseEditView(this.app, musicManager));
 		registerComponent(learningResourcesPath, getLearningResourceEditView(this.app, musicManager));
 		registerComponent(entertainmentContentsPath, getEntertainmentContentEditView(this.app, entertainmentManager));
+		registerComponent(projectPath, getProjectEditView(this.app, gtdManager));
 
 		this.registerView(EDIT_RESOURCE_VIEW_TYPE_KEY, (leaf) => {
 			this.editResourceView = new EditResourceView(leaf, this, components)

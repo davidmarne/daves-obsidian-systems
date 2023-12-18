@@ -26,9 +26,9 @@ const calculateRestaurantRankings = (restaurants: Restaurant[], selectedCuisines
 
     for (const restaurant of restaurants) {
         for (const cuisine of restaurant.cuisines) {
-            console.log(selectedCuisines[cuisine.name], restaurant, cuisine.name)
+            console.log(selectedCuisines[cuisine], restaurant, cuisine)
 
-            if (selectedCuisines[cuisine.name]) {
+            if (selectedCuisines[cuisine]) {
                 rankings[restaurant.name] = true;
             }
         }

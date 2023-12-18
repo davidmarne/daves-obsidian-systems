@@ -4,7 +4,7 @@ import { PartialUpdater, withPartial } from 'src/common/react_util';
 import Example from '../Datatable';
 import { defaultUsage } from './CreateRecipeForm';
 import { MRT_ColumnDef } from "material-react-table";
-import { AutocompleteOrCreate } from './CreateRecipeForm';
+import { AutocompleteOrCreate } from '../../../../common/AutocompleteOrCreate';
 import { Ingredient } from 'src/eating/resource_access/ingredient/ingredient';
 
 export const SetMeasurmentsForm = (props: {
