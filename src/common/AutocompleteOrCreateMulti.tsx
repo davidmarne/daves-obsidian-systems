@@ -28,7 +28,6 @@ export const AutocompleteOrCreateMulti = (props: {
     renderInput={(params) =>
         <TextField
             {...params}
-            variant='standard'
             placeholder="Select" />}
             />;
 }

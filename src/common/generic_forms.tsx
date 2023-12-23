@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from "material-react-table";
 import moment, { Moment } from "moment";
 import { useStateWithPartialUpdater, withPartial } from "./react_util";
-import { Box, Button, Container, FormControl, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, Container, MenuItem, Select, TextField } from "@mui/material";
 import * as React from 'react';
 import { AutocompleteOrCreateMulti } from "./AutocompleteOrCreateMulti";
 import { AutocompleteMulti } from "./AutocompleteMulti";
@@ -9,6 +9,37 @@ import { AutocompleteOrCreate } from "./AutocompleteOrCreate";
 import { Note } from "./note";
 import { Reference } from "src/systems/travel/resource_access/location";
 import Example from "./Datatable";
+
+// TODO: find or build state machine library
+// class ProcessBuilder<I extends Record<string, any>, O extends Record<string, any>> {
+//   readonly parentBuilder?: ProcessBuilder<I, O> | I;
+//   readonly formConfig: FormConfig<O>;
+
+//   constructor(formConfig: FormConfig<I>, parentBuilder?: ProcessBuilder<I, O>) {
+//       this.parentBuilder = parentBuilder;
+//       this.formConfig = formConfig;
+//   }
+
+//   then<N extends Record<string, any>>(phaseName: string, formConfig: FormConfig<I>): ProcessBuilder<I & O, N>  {
+//     return new ProcessBuilder(formConfig, this);
+//   }
+// }
+
+// class PB<I extends Record<string, any>> {
+//   readonly parent: PB<I> | I;
+
+//   constructor(parent: PB<I> | I) {
+//     this.parent = parent;
+//   }
+
+//   then<O extends Record<string, any>>(next: (input: I) => FormConfig<O>) {
+//     return new PB<O>();
+//   }
+// }
+
+// b.then(select recipe kinds)
+//  .then(select ingredients)
+//  .then(select ingredients);
 
 export type TableFactory<R extends Record<string, any>, P, T> = (property: P, onChange: (rowId: string, value: T) => void) => MRT_ColumnDef<R>;
 
@@ -200,15 +231,16 @@ export const tableFormElement = function <T extends Record<string, any>>(default
 
 export const selectFormElement = <T extends string>(options: T[]) =>
   (property: string, value: T, onChange: (value: T) => void) =>
-  <FormControl fullWidth><Select
+    <Select
       label={property}
       key={property}
+      name={property}
       sx={{ mt: 1 }}
       fullWidth
       value={value}
       onChange={(e) => onChange(e.target.value as T)}>
       {options.map(option => <MenuItem key={option} value={option}>{option}</MenuItem>)}
-    </Select></FormControl>;
+    </Select>;
 
 
 export const multiSelectFormElement = <T extends string>(options: T[]) => (property: string, value: T[], onChange: (value: T[]) => void) =>
