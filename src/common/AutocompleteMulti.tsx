@@ -24,7 +24,6 @@ export const AutocompleteMulti = (props: {
     renderInput={(params) =>
         <TextField
             {...params}
-            variant='standard'
             placeholder="Select" />}
             />;
 }

@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import * as React from 'react';
 import { createRoot, Root } from 'react-dom/client';
 
-export const renderMuiInShadowDom = (container: Element, initialChild: ReactElement) => {
+export const renderMuiInShadowDom = (id: string, container: Element, initialChild: ReactElement) => {
     const shadowContainer = container.attachShadow({ mode: 'open' });
     const emotionRoot = document.createElement('style');
     const shadowRootElement = document.createElement('div');
@@ -51,9 +51,12 @@ export const renderMuiInShadowDom = (container: Element, initialChild: ReactElem
         </CacheProvider>,
     );
 
+    let renderId = id;
     render(initialChild);
 
-    return (newChild: ReactElement) => {
+    return (newId: string, newChild: ReactElement) => {
+      if (renderId === newId) return;
+      renderId = newId;
       root.unmount()
       root = createRoot(shadowRootElement);
       render(newChild)

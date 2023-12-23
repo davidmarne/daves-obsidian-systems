@@ -11,7 +11,7 @@ export const EDIT_RESOURCE_VIEW_TYPE_KEY = "EDIT_RESOURCE_VIEW";
 export class EditResourceView extends View {
 	readonly plugin: DavesObsidianSystems;
 	readonly noteForm: NoteForm;
-	rerender: (element: ReactElement) => void;
+	rerender: (id: string, element: ReactElement) => void;
 
 	constructor(leaf: WorkspaceLeaf, plugin: DavesObsidianSystems, noteForm: NoteForm) {
 		super(leaf);
@@ -46,13 +46,15 @@ export class EditResourceView extends View {
 	}
 
 	async render() {
-		const renderFn = this.rerender || ((child) => {
-			this.rerender = renderMuiInShadowDom(this.containerEl, child);
-		});
 		const tfile = this.app.workspace.getActiveFile();
+		const id = tfile?.basename || "";
+		const renderFn = this.rerender || ((id, child) => {
+			this.rerender = renderMuiInShadowDom(id, this.containerEl, child);
+		});
+
 		if (tfile === null) {
 			const child = React.createElement('div', null, "no active file")
-			renderFn(child)
+			renderFn("none", child)
 			return;
 		}
 		console.log("RERENDER EDIT RESOURCE VIEW", tfile);
@@ -66,11 +68,11 @@ export class EditResourceView extends View {
 		// const componentFactory = this.noteForm[path];
 		if (!componentFactory) {
 			const child = React.createElement('div', null, "no componentFactory for file")
-			renderFn(child)
+			renderFn(id, child)
 			return;
 		}
 
 		const child = await componentFactory(tfile.basename);
-		renderFn(<div key={tfile.path}>{child}</div>);
+		renderFn(id, child);
 	}
 }

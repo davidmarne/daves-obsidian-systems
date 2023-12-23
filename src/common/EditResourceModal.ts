@@ -21,7 +21,7 @@ export class EditResourceModal extends Modal {
         const { contentEl } = this;
         contentEl.empty();
 		this.componentFactory(this.name, () => this.close())
-			.then(child => renderMuiInShadowDom(contentEl, child));
+			.then(child => renderMuiInShadowDom("id", contentEl, child));
     }
 
     onClose() {

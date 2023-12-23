@@ -27,7 +27,7 @@ export class CreateResourceModal extends Modal {
             }
             this.close();
         })
-			.then(child => renderMuiInShadowDom(contentEl, child));
+		.then(child => renderMuiInShadowDom("id", contentEl, child));
     }
 
     onClose() {

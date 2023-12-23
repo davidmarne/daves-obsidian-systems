@@ -27,6 +27,7 @@ export class WhatToMakeModal extends Modal {
 const renderForm = async (eatingManager: EatingManager, container: HTMLElement, close: () => void) => {
     const recipes = await eatingManager.listRecipes();
     renderMuiInShadowDom(
+        "whattomake",
         container,
         <WhatToMakeForm
             defaultKinds={[]}

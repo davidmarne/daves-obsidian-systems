@@ -30,6 +30,7 @@ const renderForm = async (app: App, musicManager: MusicManager, container: HTMLE
     const practiceExercises = await musicManager.listPracticeExercises();
     const learningResources = await musicManager.listLearningResources();
     renderMuiInShadowDom(
+        "whattodo",
         container,
         <WhatToDoForm
             inspirations={inpsirations}

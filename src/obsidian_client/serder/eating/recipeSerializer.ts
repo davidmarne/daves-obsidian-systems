@@ -1,4 +1,5 @@
 import { SerializerBuilder, link } from "src/common/mdast_serializer";
+import { parseWikiLink } from "src/common/wiki_link_utils";
 import { Recipe } from "src/systems/eating/resource_access/recipe";
 
 export const recipeSerializer = new SerializerBuilder<Recipe>()
@@ -16,8 +17,8 @@ export const recipeSerializer = new SerializerBuilder<Recipe>()
     })
     .heading2("Recipe")
     .table(["ingredient", "amount", "unit"], {
-        get: (data) => data.ingredientUsages,
-        set: (value) => ({ingredientUsages: value})
+        get: (data) => data.ingredientUsages.map(iu => Object.assign({}, iu, {ingredient: link('eating/ingredient/', iu.ingredient)})),
+        set: (value) => ({ingredientUsages: value.map(iu => Object.assign({}, iu, {ingredient: parseWikiLink(iu.ingredient)}))})
     })
     .heading2("Description")
     .paragraph({

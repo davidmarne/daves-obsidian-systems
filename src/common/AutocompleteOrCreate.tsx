@@ -31,6 +31,5 @@ export const AutocompleteOrCreate = (props: {
     onChange={(_, value) => props.onChange(value)}
     renderInput={(params) => <TextField
       {...params}
-      variant='standard'
       placeholder="Select" />} />;
 };

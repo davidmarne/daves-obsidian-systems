@@ -28,6 +28,7 @@ const renderForm = async (eatingManager: EatingManager, container: HTMLElement, 
     const cuisines = await eatingManager.listCuisines();
     const restaurants = await eatingManager.listRestaurants();
     renderMuiInShadowDom(
+        "whattoeat",
         container,
         <WhereToEatForm
             restaurants={restaurants}
