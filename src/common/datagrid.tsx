@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import { Recipe, RecipeKinds } from 'src/eating/resource_access/recipe/recipe';
+import { Recipe, RecipeKinds } from 'src/systems/eating/resource_access/recipe';
 
 export default function BasicEditingGrid(props: {recipes: Recipe[]}) {
 return (

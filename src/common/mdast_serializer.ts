@@ -1,4 +1,4 @@
-import { Heading, List, Node, Paragraph, Root, Yaml } from 'mdast';
+import { Heading, List, Node, Paragraph, Root, Table, TableCell, TableRow, Yaml } from 'mdast';
 import { parseYaml, stringifyYaml } from 'obsidian';
 import { AssertionError } from 'assert';
 import { withPartial } from 'src/common/react_util';
@@ -29,7 +29,7 @@ export class SerializerBuilder<T> {
         }
     }
 
-    deserialize(ast: Root, defaultValue: T): T {
+    deserialize(ast: Root, defaultValue: Partial<T>): T {
         var result = defaultValue;
         var i = 0;
         for (const step of this.steps) {
@@ -38,6 +38,7 @@ export class SerializerBuilder<T> {
             result = withPartial(result, value)
             i++;
         }
+        console.log("deserialize result", result)
         return result as T;
     }
 
@@ -47,7 +48,9 @@ export class SerializerBuilder<T> {
                 type: "yaml",
                 value: stringifyYaml(step.get(data))
             }),
-            fromAst: (node: Yaml) => step.set(parseYaml(node.value))
+            fromAst: (node: Yaml) => {
+                return step.set(parseYaml(node.value))
+            }
         });
         return this;
     }
@@ -113,6 +116,68 @@ export class SerializerBuilder<T> {
                     return textItemNode.value;
                 }
                 return step.set((node?.children || []).map((_, idx) => getText(idx)))
+            }
+        });
+        return this;
+    }
+
+
+    table<R extends Record<string, any>>(items: (keyof R)[], step: GetterSetter<T, R[]>) {
+        this.steps.push({
+            toAst: (data: T): Table => {
+                return {
+                    type: "table",
+                    children: [
+                        <TableRow>{
+                            type: "tableRow",
+                            children: items.map(it => ({
+                                type: "tableCell",
+                                children: [{
+                                    type: "text",
+                                    value: it
+                                }]
+                            }))
+                        },
+                        ...step.get(data).map((record): TableRow => ({
+                            type: 'tableRow',
+                            children: items.map<TableCell>(k => {
+                                return ({
+                                    type: "tableCell",
+                                    children: [{
+                                        type: "text",
+                                        value: record[k]
+                                    }]
+                                })
+                            })
+                        }))
+                    ]
+                }
+            },
+            fromAst: (node: Table) => {
+                const getText = (row: number, col: number) => {
+                    const tableRowNode = node.children[row];
+                    if (tableRowNode.type !== 'tableRow') throw new AssertionError({message: "invalid ast", actual: tableRowNode.type})
+                    const cellNode = tableRowNode.children[col];
+                    if (cellNode.type !== 'tableCell') throw new AssertionError({message: "invalid ast", actual: cellNode.type})
+                    const textItemNode = cellNode.children[0];
+                    if (textItemNode.type !== 'text') throw new AssertionError({message: "invalid ast", actual: textItemNode.type})
+                    return textItemNode.value as any; // TODO: hack 
+                }
+                
+                const rows = node?.children || [];
+
+                const dataRows = rows.filter((_, idx) => idx !== 0);
+                return step.set(dataRows.
+                    map((_, row) => {
+                        const rowData: Partial<R> = {};
+                        
+                        var i = 0;
+                        for (const item of items) {
+                            rowData[item] = getText(row+1, i)
+                            i++;
+                        }
+                        return rowData as R;
+                    }))
             }
         });
         return this;

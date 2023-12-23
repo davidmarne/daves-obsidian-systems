@@ -1,8 +1,6 @@
 import { TFile } from 'obsidian';
-import { ReactElement } from 'react';
-import { Note } from 'src/common/note';
-
-
+import { JSXElementConstructor, ReactElement } from 'react';
+import { Note, NoteKinds } from 'src/common/note';
 export type EditResourceComponentFactory = (path?: string, onSubmit?: (value: Note) => void) => Promise<ReactElement>;
 
 export interface EditResourceComponentFactories {

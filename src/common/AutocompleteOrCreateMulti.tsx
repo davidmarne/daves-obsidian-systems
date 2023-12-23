@@ -14,7 +14,6 @@ export const AutocompleteOrCreateMulti = (props: {
   const options = autocompleteInputValue
     ? [autocompleteInputValue, ...props.options]
     : props.options;
-    console.log("DAVE WUT PROPS", props)
 
   return <Autocomplete
     sx={{ mt: 1 }}

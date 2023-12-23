@@ -41,7 +41,7 @@ export const renderMuiInShadowDom = (container: Element, initialChild: ReactElem
         }
     });
 
-    const root = createRoot(shadowRootElement);
+    let root = createRoot(shadowRootElement);
     
     const render = (child: ReactElement) => root.render(
         <CacheProvider value={cache}>
@@ -53,5 +53,9 @@ export const renderMuiInShadowDom = (container: Element, initialChild: ReactElem
 
     render(initialChild);
 
-    return (newChild: ReactElement) => render(newChild);
+    return (newChild: ReactElement) => {
+      root.unmount()
+      root = createRoot(shadowRootElement);
+      render(newChild)
+    };
 }

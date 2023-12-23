@@ -1,37 +1,19 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { CreateResourceModal } from 'src/common/CreateResourceModal';
-import { EditResourceComponentFactories, EditResourceComponentFactory, getComponentFactoryForFilePath } from 'src/common/EditResourceComponentFactory';
+import { getComponentFactoryForFilePath } from 'src/common/EditResourceComponentFactory';
 import { EditResourceModal } from 'src/common/EditResourceModal';
 import { EDIT_RESOURCE_VIEW_TYPE_KEY, EditResourceView } from 'src/common/EditResourceView';
-import { getRecipeEditView } from 'src/eating/components/recipe';
-import { getRestaurantEditView } from 'src/eating/components/restaurant';
-import { WhatToMakeModal } from 'src/eating/components/what_to_make';
-import { WhereToEatModal } from 'src/eating/components/where_to_eat';
-import { WhatToDoModal as WhatToDoEntertainment } from 'src/entertainment/components/what_to_do'
-import EatingManager from 'src/eating/managers/eating_manager';
-import CuisineResourceAccess from 'src/eating/resource_access/cuisine/cuisine_resource_access';
-import IngredientResourceAccess from 'src/eating/resource_access/ingredient/ingredient_resource_access';
-import RecipeResourceAccess, { recipesPath } from 'src/eating/resource_access/recipe/recipe_resource_access';
-import RestaurantResourceAccess, { restaurantPath } from 'src/eating/resource_access/restaurant/restaurant_resource_access';
-import { getEntertainmentContentEditView } from 'src/entertainment/components/create_entertainment_content';
-import EntertainmentManager from 'src/entertainment/manager/entertainment_manager';
-import EntertainmentContentResourceAccess, { entertainmentContentsPath } from 'src/entertainment/resource_access/entertainment_content/entertainment_content_resource_access';
-import { getInspirationEditView } from 'src/music/components/create_inspiration';
-import { getLearningResourceEditView } from 'src/music/components/create_learning_resource';
-import { getPracticeExerciseEditView } from 'src/music/components/create_practice_exercise';
-import { WhatToDoModal } from 'src/music/components/what_to_do';
-import MusicManager from 'src/music/managers/music_manager';
-import InspirationResourceAccess, { inspirationsPath } from 'src/music/resource_access/inspiration/inspiration_resource_access';
-import LearningResourceResourceAccess, { learningResourcesPath } from 'src/music/resource_access/learning_resource/learning_resource_resource_access';
-import LyricResourceAccess from 'src/music/resource_access/lyric/lyric_resource_access';
-import PracticeExerciseResourceAccess, { practiceExercisesPath } from 'src/music/resource_access/practice_exercise/practice_exercise_resource_access';
-import MusicProjectResourceAccess from 'src/music/resource_access/project/project_resource_access';
-import { ProjectResourceAccess, projectPath } from 'src/gtd/resource_access/project';
-import { getProjectEditView } from 'src/gtd/components/project';
-import GtdManager from 'src/gtd/manager/gtd_manager';
-import { GoalResourceAccess } from 'src/gtd/resource_access/goal';
-import { ValueResourceAccess } from 'src/gtd/resource_access/value';
-import { InboxResourceAccess } from 'src/gtd/resource_access/inbox';
+import { WhatToMakeModal } from 'src/systems/eating/components/what_to_make';
+import { WhereToEatModal } from 'src/systems/eating/components/where_to_eat';
+import { WhatToDoModal as WhatToDoEntertainment } from 'src/systems/entertainment/components/what_to_do'
+import EatingManager from 'src/systems/eating/managers/eating_manager';
+import EntertainmentManager from 'src/systems/entertainment/manager/entertainment_manager';
+import { WhatToDoModal } from 'src/systems/music/components/what_to_do';
+import MusicManager from 'src/systems/music/managers/music_manager';
+import GtdManager from 'src/systems/gtd/manager/gtd_manager';
+import { createObsidianResourceAccesses } from 'src/obsidian_client/obsidian_resource_access';
+import { NoteFormComponentFactory, createNoteForm } from 'src/forms/note_forms';
+import ExerciseManager from 'src/systems/exercise/manager/exercise_manager';
 
 // Remember to rename these classes and interfaces!
 
@@ -50,63 +32,44 @@ export default class DavesObsidianSystems extends Plugin {
 
 	async onload() {
 		await this.loadSettings();
-		const ingredientResourceAccess = new IngredientResourceAccess(this.app);
-        const recipeResourceAccess = new RecipeResourceAccess(this.app);
-        const restaurantResourceAccess = new RestaurantResourceAccess(this.app);
-        const cuisineResourceAccess = new CuisineResourceAccess(this.app);
+		const obsidianResourceAccesses = createObsidianResourceAccesses(this.app);
+		
 		const eatingManager = new EatingManager(
-			ingredientResourceAccess, 
-			recipeResourceAccess, 
-			restaurantResourceAccess,
-			cuisineResourceAccess);
+			obsidianResourceAccesses['eating/ingredient/'], 
+			obsidianResourceAccesses['eating/recipe/'], 
+			obsidianResourceAccesses['eating/restaurant/'], 
+			obsidianResourceAccesses['eating/cuisine/']);
 
 
-		const inspirationResourceAccess = new InspirationResourceAccess(this.app);
-        const learningResourceAccess = new LearningResourceResourceAccess(this.app);
-        const lyricResourceAccess = new LyricResourceAccess(this.app);
-        const practiceResourceAccess = new PracticeExerciseResourceAccess(this.app);
-        const musicProjectResourceAccess = new MusicProjectResourceAccess(this.app);
 		const musicManager = new MusicManager(
-			inspirationResourceAccess, 
-			learningResourceAccess, 
-			lyricResourceAccess,
-			practiceResourceAccess,
-			musicProjectResourceAccess);
+			obsidianResourceAccesses['music/inspiration/'], 
+			obsidianResourceAccesses['music/learning_resource/'], 
+			obsidianResourceAccesses['music/lyric/'], 
+			obsidianResourceAccesses['music/practice_exercise/'],
+			obsidianResourceAccesses['music/project/']);
 
-		const entertainmentContentResourceAccess = new EntertainmentContentResourceAccess(this.app);
+
 		const entertainmentManager = new EntertainmentManager(
-			entertainmentContentResourceAccess);
+			obsidianResourceAccesses['entertainment/entertainment_content/']);
 
-
-
-		const projectResourceAccess = new ProjectResourceAccess(this.app);
-		const goalResourceAccess = new GoalResourceAccess(this.app);
-		const valueResourceAccess = new ValueResourceAccess(this.app);
-		const inboxResourceAccess = new InboxResourceAccess(this.app);
 		const gtdManager = new GtdManager(
-			projectResourceAccess,
-			goalResourceAccess,
-			valueResourceAccess,
-			inboxResourceAccess);
+			obsidianResourceAccesses['gtd/project/'],
+			obsidianResourceAccesses['gtd/goal/'],
+			obsidianResourceAccesses['gtd/value/'],
+			obsidianResourceAccesses['gtd/inbox/']);
 
-		const components: EditResourceComponentFactories = {}
-		const registerComponent = (path: string, factory: EditResourceComponentFactory) => {
-			const key = path.endsWith("/")
-				? path.substring(0, path.length - 1)
-				: path;
-			components[key] = factory
-		}
-
-		registerComponent(restaurantPath, getRestaurantEditView(this.app, eatingManager));
-		registerComponent(recipesPath, getRecipeEditView(this.app, eatingManager));
-		registerComponent(inspirationsPath, getInspirationEditView(this.app, musicManager));
-		registerComponent(practiceExercisesPath, getPracticeExerciseEditView(this.app, musicManager));
-		registerComponent(learningResourcesPath, getLearningResourceEditView(this.app, musicManager));
-		registerComponent(entertainmentContentsPath, getEntertainmentContentEditView(this.app, entertainmentManager));
-		registerComponent(projectPath, getProjectEditView(this.app, gtdManager));
-
+		const exerciseManager = new ExerciseManager(
+			obsidianResourceAccesses['exercise/exercise/']);
+	
+		const noteForm = createNoteForm(
+			eatingManager,
+			entertainmentManager,
+			gtdManager,
+			exerciseManager,
+		);
+			
 		this.registerView(EDIT_RESOURCE_VIEW_TYPE_KEY, (leaf) => {
-			this.editResourceView = new EditResourceView(leaf, this, components)
+			this.editResourceView = new EditResourceView(leaf, this, noteForm)
 			return this.editResourceView;
 		});
 
@@ -133,7 +96,7 @@ export default class DavesObsidianSystems extends Plugin {
 		})
 
 
-		for (const [k, v] of Object.entries(components)) {
+		for (const [k, v] of Object.entries(noteForm)) {
 			this.addCommand({
 				id: `create-${k}-resource-modal`,
 				name: `create ${k} resource`,
@@ -152,7 +115,12 @@ export default class DavesObsidianSystems extends Plugin {
 					return false;
 				}
 
-				const componentFactory = getComponentFactoryForFilePath(components, tfile);
+				const path = (tfile.parent?.path || '') + '/';
+				const componentFactory = Object.entries(noteForm)
+					.filter(([notePath, _]) => notePath === path)
+					.map(([_, noteFactory]) => noteFactory)
+					.first()!;
+
 				if (!componentFactory) {
 					return false;
 				}
@@ -161,7 +129,7 @@ export default class DavesObsidianSystems extends Plugin {
 					return true;
 				}
 
-				new EditResourceModal(this.app, componentFactory, tfile.path).open();
+				new EditResourceModal(this.app, componentFactory, tfile.basename).open();
 			}
 		});
 
