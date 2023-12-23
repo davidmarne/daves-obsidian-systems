@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from "material-react-table";
 import moment, { Moment } from "moment";
 import { useStateWithPartialUpdater, withPartial } from "./react_util";
-import { Box, Button, Container, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, Container, FormControl, MenuItem, Select, TextField } from "@mui/material";
 import * as React from 'react';
 import { AutocompleteOrCreateMulti } from "./AutocompleteOrCreateMulti";
 import { AutocompleteMulti } from "./AutocompleteMulti";
@@ -200,7 +200,7 @@ export const tableFormElement = function <T extends Record<string, any>>(default
 
 export const selectFormElement = <T extends string>(options: T[]) =>
   (property: string, value: T, onChange: (value: T) => void) =>
-    <Select
+  <FormControl fullWidth><Select
       label={property}
       key={property}
       sx={{ mt: 1 }}
@@ -208,7 +208,7 @@ export const selectFormElement = <T extends string>(options: T[]) =>
       value={value}
       onChange={(e) => onChange(e.target.value as T)}>
       {options.map(option => <MenuItem key={option} value={option}>{option}</MenuItem>)}
-    </Select>;
+    </Select></FormControl>;
 
 
 export const multiSelectFormElement = <T extends string>(options: T[]) => (property: string, value: T[], onChange: (value: T[]) => void) =>
