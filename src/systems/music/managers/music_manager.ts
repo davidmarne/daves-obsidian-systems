@@ -38,6 +38,14 @@ export default class MusicManager {
         await this.learningResourceResourceAccess.write(newLearningResource);
     }
 
+    async writeProject(newProject: MusicProject): Promise<void> {
+        await this.projectResourceAccess.write(newProject);
+    }
+
+    async writeLyric(newLyric: Lyric): Promise<void> {
+        await this.lyricResourceAccess.write(newLyric);
+    }
+
     async readInspiration(name: string) {
         return this.inspirationResourceAccess.read(name);
     }
@@ -48,6 +56,14 @@ export default class MusicManager {
 
     async readPracticeExercise(name: string) {
         return this.practiceExerciseResourceAccess.read(name);
+    }
+
+    async readProject(name: string) {
+        return this.projectResourceAccess.read(name);
+    }
+
+    async readLyric(name: string) {
+        return this.lyricResourceAccess.read(name);
     }
 
     async listInspirations() {

@@ -28,6 +28,12 @@ import { getGoalEditView } from "./gtd/goal";
 import GtdManager from "src/systems/gtd/manager/gtd_manager";
 import { getExerciseEditView } from "./exercise/exercise";
 import ExerciseManager from "src/systems/exercise/manager/exercise_manager";
+import MusicManager from "src/systems/music/managers/music_manager";
+import { getLyricEditView } from "./music/lyric";
+import { getInspirationEditView } from "./music/inspiration";
+import { getMusicProjectEditView } from "./music/project";
+import { getPracticeExerciseEditView } from "./music/practice_exercise";
+import { getLearningResourceEditView } from "./music/learning_resource";
 
 
 export type NoteFormComponentFactory<T extends Note> = (name?: string, onSubmit?: (value: T) => void) => Promise<ReactElement>;
@@ -40,7 +46,8 @@ export const createNoteForm = (
     eatingManager: EatingManager,
     entertainmentManager: EntertainmentManager,
     gtdManager: GtdManager,
-    exerciseManager: ExerciseManager) => ({
+    exerciseManager: ExerciseManager,
+    musicManager: MusicManager) => ({
         'eating/cuisine/': getCuisineEditView(eatingManager),
         'eating/ingredient/': getIngredientEditView(eatingManager),
         'eating/recipe/': getRecipeEditView(eatingManager),
@@ -51,9 +58,9 @@ export const createNoteForm = (
         'gtd/value/': getValueEditView(gtdManager),
         'gtd/goal/': getGoalEditView(gtdManager),
         'exercise/exercise/': getExerciseEditView(exerciseManager),
-        'music/project/': () => { throw new Error("unimplemented") },
-        'music/inspiration/': () => { throw new Error("unimplemented") },
-        'music/lyric/': () => { throw new Error("unimplemented") },
-        'music/practice_exercise/': () => { throw new Error("unimplemented") },
-        'music/learning_resource/': () => { throw new Error("unimplemented") },
+        'music/project/': getMusicProjectEditView(musicManager),
+        'music/inspiration/': getInspirationEditView(musicManager),
+        'music/lyric/': getLyricEditView(musicManager),
+        'music/practice_exercise/': getPracticeExerciseEditView(musicManager),
+        'music/learning_resource/': getLearningResourceEditView(musicManager),
     });

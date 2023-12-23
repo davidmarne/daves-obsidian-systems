@@ -66,6 +66,7 @@ export default class DavesObsidianSystems extends Plugin {
 			entertainmentManager,
 			gtdManager,
 			exerciseManager,
+			musicManager
 		);
 			
 		this.registerView(EDIT_RESOURCE_VIEW_TYPE_KEY, (leaf) => {
